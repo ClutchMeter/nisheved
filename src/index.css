@@ -1,0 +1,206 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Unbounded", "Manrope", sans-serif;
+  --font-body: "Manrope", "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Consolas", monospace;
+
+  --color-ink: #0f1522;
+  --color-ink2: #131b2b;
+  --color-panel: #17202f;
+  --color-panel2: #1d2739;
+  --color-line: #273249;
+  --color-line2: #33415c;
+  --color-fog: #e9eef6;
+  --color-mute: #91a0b6;
+  --color-dim: #5f6f88;
+
+  --color-paper: #edf1f6;
+  --color-paper2: #e2e8f0;
+  --color-inkline: #c9d3e0;
+  --color-paperink: #141b28;
+
+  --color-amber: #ffb224;
+  --color-amber2: #ff9a1f;
+  --color-mint: #3fd68f;
+  --color-coral: #ff6a5c;
+  --color-sky: #58b7ff;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-fog);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-amber);
+  color: var(--color-ink);
+}
+
+/* ---------- ambient layers ---------- */
+.noise-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+.grid-layer {
+  background-image:
+    linear-gradient(to right, rgba(145, 160, 182, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(145, 160, 182, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 30%, transparent 75%);
+}
+
+/* ---------- surfaces ---------- */
+.panel {
+  background: linear-gradient(180deg, var(--color-panel), var(--color-ink2));
+  border: 1px solid var(--color-line);
+  border-radius: 16px;
+}
+
+.lift {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s;
+}
+.lift:hover {
+  transform: translateY(-3px);
+}
+
+/* ---------- reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- anim-in (for keyed content swaps) ---------- */
+@keyframes anim-in-kf {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.anim-in {
+  animation: anim-in-kf 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---------- nav link ---------- */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 2px;
+  width: 0;
+  background: var(--color-amber);
+  transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ---------- living elements ---------- */
+@keyframes marquee-kf {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee-kf 30s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes funnel-run-kf {
+  0% {
+    left: 0%;
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% - 8px);
+    opacity: 0;
+  }
+}
+.funnel-dot {
+  animation: funnel-run-kf 3.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes floaty-kf {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.5deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1.5deg);
+  }
+}
+.floaty {
+  animation: floaty-kf 7s ease-in-out infinite;
+}
+
+/* ---------- utilities ---------- */
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .anim-in {
+    animation: none !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .lift,
+  .lift:hover {
+    transform: none;
+  }
+}
