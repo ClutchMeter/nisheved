@@ -35,8 +35,8 @@ export function useRevealObserver() {
   }, []);
 }
 
-export function useCountUp(target: number, duration = 1200): [React.RefObject<HTMLDivElement>, string] {
-  const ref = useRef<HTMLDivElement>(null);
+export function useCountUp(target: number, duration = 1200): [React.RefObject<HTMLSpanElement>, string] {
+  const ref = useRef<HTMLSpanElement>(null);
   const [value, setValue] = useState(0);
   const started = useRef(false);
 

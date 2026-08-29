@@ -1,108 +1,156 @@
+import { useCallback, useMemo, useState } from "react";
+import NicheMatrix from "./components/NicheMatrix";
+import Quiz from "./components/Quiz";
+import Factory from "./components/Factory";
+import Calculator from "./components/Calculator";
+import Roadmap from "./components/Roadmap";
 import LaunchKit from "./components/LaunchKit";
-import { IconBot, IconComment, IconDm, IconDoc, IconFunnel, IconReel } from "./components/icons";
+import { IconArrow, IconBot, IconComment, IconDm, IconFunnel, IconReel, IconRuble, IconTelegram } from "./components/icons";
 import { useCountUp, useRevealObserver, useScramble } from "./lib/hooks";
 
-const STAGES = [
-  { icon: IconReel, label: "Рилс без лица", sub: "цепляет за 3 секунды", accent: "text-coral" },
-  { icon: IconComment, label: "Кодовое слово", sub: "пишут в комментариях", accent: "text-amber" },
-  { icon: IconDm, label: "Ссылка в Директ", sub: "автоматом на бота", accent: "text-sky" },
-  { icon: IconBot, label: "Telegram-бот", sub: "продаёт и выдаёт", accent: "text-mint" },
-  { icon: IconDoc, label: "PDF + оплата", sub: "файл после платежа", accent: "text-amber" },
+const NAV = [
+  { href: "#matrix", label: "Матрица" },
+  { href: "#quiz", label: "Квиз" },
+  { href: "#factory", label: "Фабрика" },
+  { href: "#calculator", label: "Калькулятор" },
+  { href: "#roadmap", label: "План 7 дней" },
+  { href: "#prompts", label: "Промпты" },
+  { href: "#instagram", label: "Instagram" },
 ];
 
+const FUNNEL = [
+  { icon: IconReel, label: "рилсы без лица", value: "100 000", sub: "просмотров/мес", bar: "bg-fog/70", width: 100 },
+  { icon: IconComment, label: "пишут кодовое слово", value: "1 500", sub: "≈1,5% зрителей", bar: "bg-sky", width: 62 },
+  { icon: IconDm, label: "ссылка в личку", value: "1 500", sub: "автоответ бота", bar: "bg-sky", width: 56 },
+  { icon: IconBot, label: "заходят в бота", value: "900", sub: "≈60% доходят", bar: "bg-mint", width: 40 },
+  { icon: IconRuble, label: "покупают PDF", value: "≈45", sub: "≈5% зашедших", bar: "bg-amber", width: 24 },
+];
+
+const WORDS = ["НЕЙРО", "МАТРИЦА", "РИЛС", "УДАЛЁНКА", "ФРАЗЫ", "БЮДЖЕТ", "ТАБЛИЦА", "СОН", "МАНИКЮР", "СПИНА", "РЕЦЕПТ", "ЕВРОПА", "ГАЙД"];
+
 function Hero() {
-  const title = useScramble("ЗАПУСК PDF-ПРОДУКТА", 250);
-  const [r1, v1] = useCountUp(5, 900);
-  const [r2, v2] = useCountUp(5, 900);
-  const [r3, v3] = useCountUp(60, 1100);
+  const title = useScramble("выбери нишу.", 300);
+  const [revenueRef, revenueText] = useCountUp(34650, 1600);
 
   return (
     <header className="relative overflow-hidden">
-      <div className="grid-layer absolute inset-0" aria-hidden />
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute -top-32 left-[20%] w-[480px] h-[480px] rounded-full bg-amber/10 blur-[120px]" />
-        <div className="absolute top-20 right-[5%] w-[360px] h-[360px] rounded-full bg-sky/8 blur-[110px]" />
+      <div className="grid-layer absolute inset-0 opacity-70" aria-hidden />
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full bg-amber/12 blur-[120px]" />
+        <div className="absolute top-20 right-[-140px] w-[480px] h-[480px] rounded-full bg-coral/10 blur-[120px]" />
+        <div className="absolute bottom-[-180px] left-1/3 w-[560px] h-[560px] rounded-full bg-mint/8 blur-[140px]" />
       </div>
 
-      <div className="reveal max-w-7xl mx-auto px-5 sm:px-8 pt-20 pb-16 relative">
-        <div className="flex items-center gap-3 mb-6">
-          <span className="flex items-center gap-2 font-mono text-[10.5px] tracking-[0.22em] uppercase text-amber border border-amber/35 bg-amber/8 rounded-full px-3.5 py-1.5">
-            <IconFunnel size={13} />
-            воронка Reels → бот → PDF
-          </span>
-          <span className="hidden sm:block h-px flex-1 max-w-[120px] bg-line" />
-        </div>
+      <div className="relative max-w-7xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-14 grid lg:grid-cols-2 gap-14 items-center">
+        <div className="reveal">
+          <div className="inline-flex items-center gap-2.5 font-mono text-[11px] tracking-[0.18em] text-amber border border-amber/35 bg-amber/8 px-3.5 py-2 rounded-full mb-7">
+            <span className="w-2 h-2 rounded-full bg-amber animate-pulse" />
+            PDF-ПРОДУКТ · RILS-ВОРОНКА · 2026
+          </div>
+          <h1 className="font-display font-extrabold tracking-tight leading-[1.04] text-[clamp(2.1rem,4.8vw,3.9rem)]">
+            Не можешь решить, <br />
+            <span className="text-amber">{title}</span>
+          </h1>
+          <p className="mt-6 text-mute text-[15px] leading-relaxed max-w-lg">
+            «Нишевед» сканирует 12 ниш под воронку <span className="text-fog font-semibold">рилсы → кодовое слово → телеграм-бот → PDF</span>:
+            оценки, готовый текст гайда, сценарий бота, 10 рилсов, промпты и айдентика Instagram.
+          </p>
+          <div className="mt-9 flex flex-wrap items-center gap-4">
+            <a
+              href="#matrix"
+              className="group inline-flex items-center gap-2.5 bg-amber text-ink font-display font-bold text-[13.5px] px-6 py-4 rounded-lg transition-all duration-300 hover:bg-coral hover:-translate-y-0.5 shadow-[0_12px_40px_-10px_var(--color-amber)]"
+            >
+              Сканировать 12 ниш
+              <IconArrow size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+            </a>
+            <a href="#quiz" className="font-mono text-[12px] text-mute hover:text-fog transition-colors duration-200 border-b border-line pb-0.5">
+              или пройти квиз за 60 секунд
+            </a>
+          </div>
 
-        <h1 className="font-display font-extrabold text-[clamp(2rem,5.2vw,4.2rem)] leading-[1.04] tracking-tight max-w-3xl">
-          {title}
-          <span className="block text-amber mt-1">за один вечер</span>
-        </h1>
-
-        <p className="mt-6 text-[15px] leading-relaxed text-mute max-w-xl">
-          Всё, что нужно, чтобы собрать продаваемый PDF-гайд нейросетями и запустить воронку в Instagram:
-          готовые промпты для текста и вёрстки плюс имя, аватар и био для аккаунта.
-        </p>
-
-        <div className="flex flex-wrap items-center gap-4 mt-9">
-          <a
-            href="#prompts"
-            className="group inline-flex items-center gap-2.5 rounded-lg bg-amber text-ink font-display font-bold text-[13.5px] px-6 py-3.5 transition-all duration-300 hover:bg-coral hover:-translate-y-0.5 shadow-[0_10px_36px_-10px_var(--color-amber)]"
-          >
-            <IconDoc size={16} />
-            Промпты для PDF
-          </a>
-          <a
-            href="#instagram"
-            className="group inline-flex items-center gap-2.5 rounded-lg border border-line text-fog font-display font-bold text-[13.5px] px-6 py-3.5 transition-all duration-300 hover:border-coral/60 hover:text-coral hover:-translate-y-0.5"
-          >
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8">
-              <rect x="4" y="4" width="16" height="16" rx="4.5" />
-              <circle cx="12" cy="12" r="3.6" />
-              <circle cx="16.6" cy="7.4" r="1" fill="currentColor" stroke="none" />
-            </svg>
-            Instagram-айдентика
-          </a>
-        </div>
-
-        {/* funnel pipeline */}
-        <div className="mt-14 panel p-5 sm:p-6 overflow-x-auto scrollbar-none">
-          <div className="flex items-center gap-3 min-w-[760px]">
-            {STAGES.map((s, i) => (
-              <div key={s.label} className="flex items-center gap-3 flex-1">
-                <div className="lift group flex flex-col items-start gap-2.5 rounded-xl border border-line bg-ink px-4 py-4 flex-1 min-w-0 hover:border-amber/40">
-                  <span className={`flex items-center justify-center w-9 h-9 rounded-lg bg-line/50 ${s.accent} transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6`}>
-                    <s.icon size={18} />
-                  </span>
-                  <div className="min-w-0">
-                    <div className="font-display font-bold text-[12.5px] text-fog truncate">{s.label}</div>
-                    <div className="font-mono text-[9.5px] text-dim mt-0.5 truncate">{s.sub}</div>
-                  </div>
-                </div>
-                {i < STAGES.length - 1 && (
-                  <span className="relative flex items-center shrink-0 w-6" aria-hidden>
-                    <span className="h-px w-full bg-line" />
-                    <span className="absolute left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-amber animate-pulse" />
-                  </span>
-                )}
+          <div className="mt-12 grid grid-cols-3 gap-6 max-w-md">
+            {[
+              { v: "12", l: "проверенных ниш" },
+              { v: "36", l: "хуков для рилсов" },
+              { v: "5", l: "минут до плана" },
+            ].map((s) => (
+              <div key={s.l} className="border-l-2 border-line pl-4">
+                <div className="font-display font-extrabold text-2xl text-fog">{s.v}</div>
+                <div className="font-mono text-[10px] text-dim mt-1">{s.l}</div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* stats */}
-        <div className="flex flex-wrap gap-x-12 gap-y-6 mt-12">
-          <div>
-            <div ref={r1} className="font-display font-extrabold text-3xl text-amber tabular-nums">{v1}</div>
-            <div className="font-mono text-[10px] text-dim mt-1">готовых промптов</div>
+        {/* живая воронка */}
+        <div className="reveal relative">
+          <div className="panel rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber/60 to-transparent" />
+            <div className="flex items-center justify-between mb-7">
+              <div className="flex items-center gap-3">
+                <span className="text-amber flex items-center justify-center w-9 h-9 rounded-lg bg-amber/12 border border-amber/25">
+                  <IconFunnel size={18} />
+                </span>
+                <div>
+                  <div className="font-display font-bold text-[14px]">живая симуляция воронки</div>
+                  <div className="font-mono text-[10px] text-dim mt-0.5">данные обновляются при твоих цифрах в калькуляторе</div>
+                </div>
+              </div>
+              <span className="font-mono text-[10px] text-mint border border-mint/30 bg-mint/8 px-2.5 py-1.5 rounded-full flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-mint animate-pulse" />
+                live
+              </span>
+            </div>
+
+            <div className="relative space-y-3">
+              {FUNNEL.map((f, i) => (
+                <div key={f.label} className="group flex items-center gap-4">
+                  <span className="w-9 h-9 shrink-0 rounded-lg border border-line bg-ink flex items-center justify-center text-mute group-hover:text-amber group-hover:border-amber/40 transition-colors duration-300">
+                    <f.icon size={16} />
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline justify-between gap-3 mb-1.5">
+                      <span className="font-mono text-[10.5px] tracking-wide text-mute truncate">{f.label}</span>
+                      <span className="font-display font-bold text-[13.5px] text-fog tabular-nums shrink-0">
+                        {f.value} <span className="font-mono font-normal text-[9px] text-dim">{f.sub}</span>
+                      </span>
+                    </div>
+                    <div className="h-2 rounded-full bg-line/50 overflow-hidden relative">
+                      <div className={`h-full rounded-full ${f.bar} score-bar`} style={{ width: `${f.width}%` }} />
+                      <span
+                        className="funnel-dot absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-fog shadow-[0_0_8px_rgba(233,238,246,0.9)]"
+                        style={{ animationDelay: `${i * 0.45}s` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-7 pt-6 border-t border-line flex items-end justify-between gap-4">
+              <div>
+                <div className="font-mono text-[10px] text-dim tracking-[0.15em] mb-1.5">ВЫРУЧКА / МЕСЯЦ</div>
+                <div className="font-display font-extrabold text-[clamp(1.9rem,3.5vw,2.6rem)] leading-none text-amber tabular-nums flex items-baseline gap-1">
+                  <span ref={revenueRef}>{revenueText}</span>
+                  <span className="text-[0.55em] text-mute">₽</span>
+                </div>
+              </div>
+              <div className="font-mono text-[9.5px] text-dim text-right leading-relaxed max-w-[160px]">
+                чек 770 ₽ · без лица, без опыта, ~60 мин/день
+              </div>
+            </div>
           </div>
-          <div>
-            <div ref={r2} className="font-display font-extrabold text-3xl text-amber tabular-nums">{v2}</div>
-            <div className="font-mono text-[10px] text-dim mt-1">концепций бренда</div>
-          </div>
-          <div>
-            <div ref={r3} className="font-display font-extrabold text-3xl text-amber tabular-nums">{v3} мин</div>
-            <div className="font-mono text-[10px] text-dim mt-1">до первого черновика</div>
-          </div>
+        </div>
+      </div>
+
+      <div className="relative border-y border-line bg-ink2/70 overflow-hidden py-4">
+        <div className="marquee-track flex w-max gap-0 font-mono text-[13px] tracking-[0.22em] text-mute">
+          {[...WORDS, ...WORDS].map((w, i) => (
+            <span key={i} className="flex items-center whitespace-nowrap">
+              <span className="mx-5">«{w}»</span>
+              <span className="text-amber text-[9px]">✦</span>
+            </span>
+          ))}
         </div>
       </div>
     </header>
@@ -111,6 +159,12 @@ function Hero() {
 
 export default function App() {
   useRevealObserver();
+  const [pickedNiche, setPickedNiche] = useState<string | null>(null);
+
+  const handlePick = useCallback((id: string) => {
+    setPickedNiche(id);
+    document.getElementById("matrix")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-ink text-fog font-body">
@@ -123,30 +177,35 @@ export default function App() {
               <IconFunnel size={19} />
             </span>
             <span className="font-display font-extrabold tracking-tight text-[15px]">
-              PDF<span className="text-amber">·</span>ЗАПУСК
+              НИШЕ<span className="text-amber">ВЕД</span>
             </span>
           </a>
 
-          <div className="hidden md:flex items-center gap-7">
-            <a href="#prompts" className="nav-link font-mono text-[12px] tracking-wide text-mute hover:text-fog transition-colors duration-200">
-              Промпты
-            </a>
-            <a href="#instagram" className="nav-link font-mono text-[12px] tracking-wide text-mute hover:text-fog transition-colors duration-200">
-              Айдентика
-            </a>
+          <div className="hidden lg:flex items-center gap-6">
+            {NAV.map((n) => (
+              <a key={n.href} href={n.href} className="nav-link font-mono text-[12px] tracking-wide text-mute hover:text-fog transition-colors duration-200">
+                {n.label}
+              </a>
+            ))}
           </div>
 
           <a
-            href="#prompts"
+            href="#quiz"
             className="group inline-flex items-center gap-2 rounded-lg bg-fog text-ink font-display font-bold text-[12.5px] px-4 py-2.5 transition-all duration-300 hover:bg-amber hover:-translate-y-0.5"
           >
-            Начать
+            Подобрать нишу
+            <IconArrow size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
           </a>
         </div>
       </nav>
 
       <main id="top">
         <Hero />
+        <NicheMatrix preselectedId={pickedNiche} />
+        <Quiz onPick={handlePick} />
+        <Factory preselectedId={pickedNiche} />
+        <Calculator />
+        <Roadmap />
         <LaunchKit />
       </main>
 
@@ -158,18 +217,25 @@ export default function App() {
             </span>
             <div>
               <div className="font-display font-bold text-[13px]">
-                PDF<span className="text-amber">·</span>ЗАПУСК
+                НИШЕ<span className="text-amber">ВЕД</span>
               </div>
-              <div className="font-mono text-[10px] text-dim">рилсы → ключ → бот → PDF</div>
+              <div className="font-mono text-[10px] text-dim">рилсы → ключ → бот → PDF · запуск 2026</div>
             </div>
           </div>
           <p className="font-mono text-[10.5px] text-dim text-center sm:text-right max-w-md leading-relaxed">
-            Промпты и айдентика — заготовки. Наполни гайд своей экспертизой и проверь цифры перед продажей.
+            Цифры калькулятора и справочников — модель для планирования, не гарантия дохода. Итог зависит от
+            регулярности публикаций и качества продукта.
           </p>
           <a href="#top" className="group inline-flex items-center gap-2 font-mono text-[11px] text-mute hover:text-amber transition-colors duration-200">
             наверх
-            <span className="inline-block transition-transform duration-300 group-hover:-translate-y-0.5">↑</span>
+            <IconArrow size={13} className="-rotate-90 transition-transform duration-300 group-hover:-translate-y-0.5" />
           </a>
+        </div>
+        <div className="border-t border-line/60">
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-center gap-2 font-mono text-[10px] text-dim">
+            <IconTelegram size={12} className="text-sky" />
+            воронка: рилс с кодовым словом → автоответ → бот → оплата Stars → PDF в чат
+          </div>
         </div>
       </footer>
     </div>
