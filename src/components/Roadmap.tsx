@@ -33,7 +33,7 @@ export default function Roadmap() {
         <div className="reveal flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <span className="font-mono text-[11px] tracking-[0.22em] uppercase text-coral">05 · план запуска</span>
+              <span className="font-mono text-[11px] tracking-[0.22em] uppercase text-coral">06 · план запуска</span>
               <span className="h-px w-10 bg-coral/60" />
             </div>
             <h2 className="font-display font-extrabold text-[clamp(1.7rem,3.6vw,2.9rem)] leading-[1.08] tracking-tight">

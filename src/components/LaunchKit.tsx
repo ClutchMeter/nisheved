@@ -323,7 +323,7 @@ export default function LaunchKit() {
                 ))}
               </div>
               <p className="font-mono text-[10px] text-dim mt-3 leading-relaxed">
-                Бота в BotFather назови <span className="text-amber">nisheved_bot</span> — тогда ссылка из шапки совпадёт. Создашь бота — вставь ссылку в профиль.
+                <span className="text-mint font-bold">✓ @nisheved и @nisheved_bot уже созданы.</span> Осталось: подключить бота к сценарию и оплате из «Фабрики» и вставить ссылку t.me/nisheved_bot в шапку профиля.
               </p>
             </div>
 

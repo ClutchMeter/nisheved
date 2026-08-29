@@ -3,6 +3,7 @@ import NicheMatrix from "./components/NicheMatrix";
 import Quiz from "./components/Quiz";
 import Factory from "./components/Factory";
 import Calculator from "./components/Calculator";
+import ScalePlan from "./components/ScalePlan";
 import Roadmap from "./components/Roadmap";
 import LaunchKit from "./components/LaunchKit";
 import { IconArrow, IconBot, IconComment, IconCross, IconDm, IconFunnel, IconReel, IconRuble, IconTelegram } from "./components/icons";
@@ -13,6 +14,7 @@ const NAV = [
   { href: "#quiz", label: "Квиз" },
   { href: "#factory", label: "Фабрика" },
   { href: "#calculator", label: "Калькулятор" },
+  { href: "#scale", label: "До 100к+" },
   { href: "#roadmap", label: "План 7 дней" },
   { href: "#prompts", label: "Промпты" },
   { href: "#instagram", label: "Instagram" },
@@ -278,6 +280,7 @@ export default function App() {
         <Quiz onPick={handlePick} />
         <Factory preselectedId={pickedNiche} />
         <Calculator />
+        <ScalePlan />
         <Roadmap />
         <LaunchKit />
       </main>
