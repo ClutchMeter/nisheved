@@ -256,7 +256,7 @@ export default function Factory({ preselectedId }: { preselectedId: string | nul
           <div className="lg:col-span-8">
             <div className="panel overflow-hidden flex flex-col h-full">
               <div className="flex items-center justify-between border-b border-line px-4 sm:px-5">
-                <div className="flex overflow-x-auto scrollbar-none">
+                <div className="flex min-w-0 overflow-x-auto scrollbar-none">
                   {TABS.map((t) => (
                     <button
                       key={t.id}
@@ -298,7 +298,7 @@ export default function Factory({ preselectedId }: { preselectedId: string | nul
                               e.stopPropagation();
                               copy(serializeChapter(c, i), `ch${i}`);
                             }}
-                            className="font-mono text-[9.5px] px-2 py-1 rounded border border-line text-dim opacity-0 group-hover:opacity-100 hover:border-amber/50 hover:text-amber transition-all duration-200 cursor-pointer shrink-0"
+                            className="font-mono text-[9.5px] px-2 py-1 rounded border border-line text-dim sm:opacity-0 sm:group-hover:opacity-100 hover:border-amber/50 hover:text-amber transition-all duration-200 cursor-pointer shrink-0"
                           >
                             {copied === `ch${i}` ? "✓" : "копировать"}
                           </button>
@@ -338,7 +338,7 @@ export default function Factory({ preselectedId }: { preselectedId: string | nul
                           <span className="font-mono text-[10px] text-mint tracking-wide">{m.step}</span>
                           <button
                             onClick={() => copy(m.text, m.step)}
-                            className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 font-mono text-[9.5px] text-dim hover:text-amber cursor-pointer"
+                            className="sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 font-mono text-[9.5px] text-dim hover:text-amber cursor-pointer"
                           >
                             {copied === m.step ? "✓" : "копировать"}
                           </button>
@@ -382,7 +382,7 @@ export default function Factory({ preselectedId }: { preselectedId: string | nul
                 )}
               </div>
 
-              <div className="border-t border-line px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
+              <div className="border-t border-line px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-3">
                 <p className="font-mono text-[10.5px] text-dim hidden sm:block">
                   {tab === "pdf" ? "Каждую главу можно копировать отдельно." : "Копируется по одному."}
                 </p>

@@ -125,8 +125,8 @@ function Hero() {
                     <f.icon size={16} />
                   </span>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-baseline justify-between gap-3 mb-1.5">
-                      <span className="font-mono text-[10.5px] tracking-wide text-mute truncate">{f.label}</span>
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 mb-1.5">
+                      <span className="font-mono text-[10.5px] tracking-wide text-mute min-w-0">{f.label}</span>
                       <span className="font-display font-bold text-[13.5px] text-fog tabular-nums shrink-0">
                         {f.value} <span className="font-mono font-normal text-[9px] text-dim">{f.sub}</span>
                       </span>
@@ -146,7 +146,7 @@ function Hero() {
               ))}
             </div>
 
-            <div className="mt-7 pt-6 border-t border-line flex items-end justify-between gap-4">
+            <div className="mt-7 pt-6 border-t border-line flex flex-col sm:flex-row sm:items-end justify-between gap-3">
               <div>
                 <div className="font-mono text-[10px] text-dim tracking-[0.15em] mb-1.5">ВЫРУЧКА / МЕСЯЦ</div>
                 <div className="font-display font-extrabold text-[clamp(1.9rem,3.5vw,2.6rem)] leading-none text-amber tabular-nums flex items-baseline gap-1">
@@ -154,7 +154,7 @@ function Hero() {
                   <span className="text-[0.55em] text-mute">₽</span>
                 </div>
               </div>
-              <div className="font-mono text-[9.5px] text-dim text-right leading-relaxed max-w-[160px]">
+              <div className="font-mono text-[9.5px] text-dim leading-relaxed sm:text-right sm:max-w-[160px]">
                 чек 770 ₽ · без лица, без опыта, ~60 мин/день
               </div>
             </div>
@@ -305,8 +305,8 @@ export default function App() {
           </a>
         </div>
         <div className="border-t border-line/60">
-          <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-center gap-2 font-mono text-[10px] text-dim">
-            <IconTelegram size={12} className="text-sky" />
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center font-mono text-[10px] text-dim">
+            <IconTelegram size={12} className="text-sky shrink-0" />
             воронка: рилс с кодовым словом → автоответ → бот → оплата Stars → PDF в чат
           </div>
         </div>

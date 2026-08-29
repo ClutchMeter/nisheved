@@ -159,7 +159,7 @@ export default function NicheMatrix({ preselectedId }: { preselectedId: string |
                               <span className="text-[11.5px] leading-relaxed text-fog/85">«{h}»</span>
                               <button
                                 onClick={() => copy(h, `hk-${n.id}-${k}`)}
-                                className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-dim hover:text-amber cursor-pointer shrink-0"
+                                className="sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 text-dim hover:text-amber cursor-pointer shrink-0"
                               >
                                 {copied === `hk-${n.id}-${k}` ? <span className="font-mono text-[10px]">✓</span> : <IconCopy size={12} />}
                               </button>
