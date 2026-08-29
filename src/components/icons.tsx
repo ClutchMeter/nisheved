@@ -23,6 +23,14 @@ export const IconFunnel = (p: P) => (
   </svg>
 );
 
+export const IconGlobe = (p: P) => (
+  <svg {...base(p)}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18" />
+    <path d="M12 3c2.8 2.6 4.2 5.6 4.2 9S14.8 18.4 12 21c-2.8-2.6-4.2-5.6-4.2-9S9.2 5.6 12 3z" />
+  </svg>
+);
+
 export const IconReel = (p: P) => (
   <svg {...base(p)}>
     <rect x="4" y="4" width="16" height="16" rx="3" />

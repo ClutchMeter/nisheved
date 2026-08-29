@@ -6,6 +6,7 @@ import Calculator from "./components/Calculator";
 import ScalePlan from "./components/ScalePlan";
 import Roadmap from "./components/Roadmap";
 import LaunchKit from "./components/LaunchKit";
+import Deploy from "./components/Deploy";
 import { IconArrow, IconBot, IconComment, IconCross, IconDm, IconFunnel, IconReel, IconRuble, IconTelegram } from "./components/icons";
 import { useCountUp, useRevealObserver, useScramble } from "./lib/hooks";
 
@@ -14,10 +15,11 @@ const NAV = [
   { href: "#quiz", label: "Квиз" },
   { href: "#factory", label: "Фабрика" },
   { href: "#calculator", label: "Калькулятор" },
-  { href: "#scale", label: "До 100к+" },
-  { href: "#roadmap", label: "План 7 дней" },
+  { href: "#scale", label: "100к+" },
+  { href: "#roadmap", label: "План" },
   { href: "#prompts", label: "Промпты" },
   { href: "#instagram", label: "Instagram" },
+  { href: "#deploy", label: "Хостинг" },
 ];
 
 const FUNNEL = [
@@ -283,6 +285,7 @@ export default function App() {
         <ScalePlan />
         <Roadmap />
         <LaunchKit />
+        <Deploy />
       </main>
 
       <footer className="border-t border-line bg-ink2/60">
