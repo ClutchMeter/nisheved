@@ -120,6 +120,55 @@ body {
   width: 100%;
 }
 
+/* ---------- living elements ---------- */
+@keyframes marquee-kf {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee-kf 30s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes funnel-run-kf {
+  0% {
+    left: 0%;
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% - 8px);
+    opacity: 0;
+  }
+}
+.funnel-dot {
+  animation: funnel-run-kf 3.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes floaty-kf {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.5deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1.5deg);
+  }
+}
+.floaty {
+  animation: floaty-kf 7s ease-in-out infinite;
+}
+
 /* ---------- utilities ---------- */
 .scrollbar-none {
   scrollbar-width: none;

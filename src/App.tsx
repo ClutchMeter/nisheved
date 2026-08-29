@@ -1,11 +1,11 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import NicheMatrix from "./components/NicheMatrix";
 import Quiz from "./components/Quiz";
 import Factory from "./components/Factory";
 import Calculator from "./components/Calculator";
 import Roadmap from "./components/Roadmap";
 import LaunchKit from "./components/LaunchKit";
-import { IconArrow, IconBot, IconComment, IconDm, IconFunnel, IconReel, IconRuble, IconTelegram } from "./components/icons";
+import { IconArrow, IconBot, IconComment, IconCross, IconDm, IconFunnel, IconReel, IconRuble, IconTelegram } from "./components/icons";
 import { useCountUp, useRevealObserver, useScramble } from "./lib/hooks";
 
 const NAV = [
@@ -31,9 +31,25 @@ const WORDS = ["НЕЙРО", "МАТРИЦА", "РИЛС", "УДАЛЁНКА", "
 function Hero() {
   const title = useScramble("выбери нишу.", 300);
   const [revenueRef, revenueText] = useCountUp(34650, 1600);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setMounted(true), 150);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <header className="relative overflow-hidden">
+      <div className="hidden xl:flex absolute top-44 right-[5%] z-10 pointer-events-none" aria-hidden>
+        <span className="floaty inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.18em] text-amber border border-amber/30 bg-ink/85 backdrop-blur px-4 py-2.5 rounded-full shadow-[0_10px_36px_-10px_rgba(0,0,0,0.7)]">
+          «МАТРИЦА» <span className="text-amber text-[9px]">✦</span> 1 500 ключей
+        </span>
+      </div>
+      <div className="hidden xl:flex absolute bottom-52 right-[22%] z-10 pointer-events-none" aria-hidden>
+        <span className="floaty inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.18em] text-mint border border-mint/30 bg-ink/85 backdrop-blur px-4 py-2.5 rounded-full shadow-[0_10px_36px_-10px_rgba(0,0,0,0.7)]" style={{ animationDelay: "1.6s" }}>
+          «НЕЙРО» <span className="text-mint text-[9px]">✦</span> в боте
+        </span>
+      </div>
       <div className="grid-layer absolute inset-0 opacity-70" aria-hidden />
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
         <div className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full bg-amber/12 blur-[120px]" />
@@ -116,7 +132,10 @@ function Hero() {
                       </span>
                     </div>
                     <div className="h-2 rounded-full bg-line/50 overflow-hidden relative">
-                      <div className={`h-full rounded-full ${f.bar} score-bar`} style={{ width: `${f.width}%` }} />
+                      <div
+                        className={`h-full rounded-full ${f.bar} score-bar`}
+                        style={{ width: mounted ? `${f.width}%` : "0%", transitionDelay: `${i * 120}ms` }}
+                      />
                       <span
                         className="funnel-dot absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-fog shadow-[0_0_8px_rgba(233,238,246,0.9)]"
                         style={{ animationDelay: `${i * 0.45}s` }}
@@ -160,10 +179,23 @@ function Hero() {
 export default function App() {
   useRevealObserver();
   const [pickedNiche, setPickedNiche] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const handlePick = useCallback((id: string) => {
     setPickedNiche(id);
     document.getElementById("matrix")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const el = document.documentElement;
+      const max = el.scrollHeight - el.clientHeight;
+      setProgress(max > 0 ? Math.min(100, (el.scrollTop / max) * 100) : 0);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
@@ -171,6 +203,11 @@ export default function App() {
       <div className="noise-layer" aria-hidden />
 
       <nav className="sticky top-0 z-50 border-b border-line/80 bg-ink/85 backdrop-blur-md">
+        <div
+          className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-amber to-coral"
+          style={{ width: `${progress}%`, transition: "width 0.12s linear" }}
+          aria-hidden
+        />
         <div className="max-w-7xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between gap-4">
           <a href="#top" className="flex items-center gap-2.5 group">
             <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-amber text-ink transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">
@@ -189,14 +226,50 @@ export default function App() {
             ))}
           </div>
 
-          <a
-            href="#quiz"
-            className="group inline-flex items-center gap-2 rounded-lg bg-fog text-ink font-display font-bold text-[12.5px] px-4 py-2.5 transition-all duration-300 hover:bg-amber hover:-translate-y-0.5"
-          >
-            Подобрать нишу
-            <IconArrow size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-          </a>
+          <div className="flex items-center gap-2.5">
+            <a
+              href="#quiz"
+              className="group hidden sm:inline-flex items-center gap-2 rounded-lg bg-fog text-ink font-display font-bold text-[12.5px] px-4 py-2.5 transition-all duration-300 hover:bg-amber hover:-translate-y-0.5"
+            >
+              Подобрать нишу
+              <IconArrow size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+            </a>
+            <button
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-label="меню"
+              className={`lg:hidden flex items-center justify-center w-10 h-10 rounded-lg border transition-all duration-200 cursor-pointer ${
+                menuOpen ? "border-amber/60 text-amber bg-amber/10" : "border-line text-fog hover:border-amber/40"
+              }`}
+            >
+              {menuOpen ? (
+                <IconCross size={16} />
+              ) : (
+                <span className="flex flex-col gap-[5px]">
+                  <span className="block w-[17px] h-[1.5px] bg-current rounded-full" />
+                  <span className="block w-[13px] h-[1.5px] bg-current rounded-full" />
+                  <span className="block w-[17px] h-[1.5px] bg-current rounded-full" />
+                </span>
+              )}
+            </button>
+          </div>
         </div>
+
+        {menuOpen && (
+          <div className="lg:hidden anim-in border-t border-line bg-ink/95 backdrop-blur-md px-5 py-4">
+            <div className="grid grid-cols-2 gap-2">
+              {NAV.map((n) => (
+                <a
+                  key={n.href}
+                  href={n.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="font-mono text-[12px] text-mute hover:text-amber px-3.5 py-3 rounded-lg border border-line/70 hover:border-amber/40 transition-colors duration-200"
+                >
+                  {n.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </nav>
 
       <main id="top">

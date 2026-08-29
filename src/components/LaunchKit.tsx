@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { IconArrow, IconCheck, IconCopy, IconDoc, IconInstagram, IconSpark, IconTelegram } from "./icons";
+import { IconArrow, IconCheck, IconCopy, IconDoc, IconFlame, IconInstagram, IconSpark, IconTarget, IconTelegram } from "./icons";
 
 /* ---------------- prompts ---------------- */
 
@@ -122,133 +122,76 @@ amber #FFB224 geometric accent, generous whitespace, premium feel, --ar 2:3`,
 
 /* ---------------- brands ---------------- */
 
-interface Brand {
+interface BioVariant {
   id: string;
-  name: string;
-  handle: string;
-  tagline: string;
-  niches: string;
-  bio1: string;
-  bio2: string;
-  avatarConcept: string;
-  accent: string;
-  mark: ReactNode;
+  label: string;
+  build: (kw: string, handle: string) => string;
 }
 
-const BRANDS: Brand[] = [
+const HANDLES = ["nisheved", "nisheved.pro", "nisheved.lab"];
+
+const BIO_VARIANTS: BioVariant[] = [
   {
-    id: "gaidlab",
-    name: "ГайдЛаб",
-    handle: "gaid.lab",
-    tagline: "Лаборатория рабочих гайдов",
-    niches: "универсальный — под любую нишу",
-    bio1: "Рабочие гайды без воды 🧪",
-    bio2: "Скачал → применил → результат",
-    avatarConcept: "open book morphing into a rising bar chart",
-    accent: "#ffb224",
-    mark: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-9 h-9">
-        <path d="M8 34V14l8 4 8-4v20l-8 4-8-4z" fill="#ffb224" />
-        <path d="M24 14l8-4 8 4v20l-8 4-8-4V14z" fill="#ffb224" opacity=".45" />
-      </svg>
-    ),
+    id: "funnel",
+    label: "Воронка",
+    build: (kw, h) =>
+      `Нишевед · PDF-гайды без воды 🔎\nРилсы без лица → бот → гайд за 60 сек\nПиши «${kw}» в Директ — пришлю 📄\n⬇ @${h}`,
   },
   {
-    id: "koddohoda",
-    name: "КодДохода",
-    handle: "kod.dohoda",
-    tagline: "Доход на навыках и нейросетях",
-    niches: "нейросети, удалёнка, финансы",
-    bio1: "Доход на навыках и ИИ 💡",
-    bio2: "Без лица · по шагам · с цифрами",
-    avatarConcept: "abstract key unlocking a glowing coin",
-    accent: "#3fd68f",
-    mark: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-9 h-9">
-        <circle cx="18" cy="18" r="9" stroke="#3fd68f" strokeWidth="4" />
-        <path d="M24 25l14 14M32 33l5-5M37 38l5-5" stroke="#3fd68f" strokeWidth="4" strokeLinecap="round" />
-      </svg>
-    ),
+    id: "expert",
+    label: "Эксперт",
+    build: (kw, h) =>
+      `Запуск PDF-продукта за 7 дней 🧭\n12 ниш · квиз · план · калькулятор\nСлово «${kw}» в Директ → гайд 📄\n⬇ @${h}`,
   },
   {
-    id: "matrix",
-    name: "Матрица.Ты",
-    handle: "matrix.ty",
-    tagline: "Разборы по дате рождения",
-    niches: "матрица судьбы, таро, эзотерика",
-    bio1: "Твой код судьбы по дате рождения ✨",
-    bio2: "Разбор за 5 минут — пиши МАТРИЦА",
-    avatarConcept: "geometric life-matrix mandala grid with a glowing center",
-    accent: "#58b7ff",
-    mark: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-9 h-9">
-        <circle cx="24" cy="24" r="16" stroke="#58b7ff" strokeWidth="3" />
-        <circle cx="24" cy="24" r="8" stroke="#58b7ff" strokeWidth="3" opacity=".55" />
-        <circle cx="24" cy="24" r="3" fill="#58b7ff" />
-        <path d="M24 8v8M24 32v8M8 24h8M32 24h8" stroke="#58b7ff" strokeWidth="3" strokeLinecap="round" opacity=".55" />
-      </svg>
-    ),
-  },
-  {
-    id: "sistema30",
-    name: "Система 30",
-    handle: "sistema.30",
-    tagline: "Результат за 30 дней",
-    niches: "универсальный — метод + план",
-    bio1: "Результат за 30 дней ⏱",
-    bio2: "Метод + план + трекер в одном PDF",
-    avatarConcept: "circular 30-day loop arrow forming the number 30",
-    accent: "#ff6a5c",
-    mark: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-9 h-9">
-        <path d="M24 8a16 16 0 1 1-11.3 4.7" stroke="#ff6a5c" strokeWidth="4" strokeLinecap="round" />
-        <path d="M12 6l1 8 8-2" stroke="#ff6a5c" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-  },
-  {
-    id: "tihiy",
-    name: "ТихийДоход",
-    handle: "tihiy.dohod",
-    tagline: "Зарабатывай без лица",
-    niches: "воронки, контент без съёмок",
-    bio1: "Зарабатывай без лица 🌙",
-    bio2: "Воронки, что продают, пока ты спишь",
-    avatarConcept: "crescent moon over a quietly rising graph",
-    accent: "#ffb224",
-    mark: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-9 h-9">
-        <path d="M30 8a14 14 0 1 0 10 22 16 16 0 0 1-10-22z" fill="#ffb224" />
-        <path d="M8 38l8-6 6 4 10-12" stroke="#ffb224" strokeWidth="3" strokeLinecap="round" opacity=".5" />
-      </svg>
-    ),
+    id: "bold",
+    label: "Дерзкий",
+    build: (kw, h) =>
+      `Пока ты листаешь — кто-то продаёт PDF ⚡\nРилсы → ключ → бот → деньги\n«${kw}» в Директ — пришлю гайд 📄\n⬇ @${h}`,
   },
 ];
 
-const HIGHLIGHTS = ["Гайды", "Отзывы", "Как купить", "Бесплатно"];
+const HEADER_ROWS = [
+  { k: "Имя (виден в поиске)", v: "Нишевед · PDF-гайды" },
+  { k: "Категория", v: "Цифровой автор" },
+  { k: "Ссылка в шапке", v: "https://t.me/nisheved_bot" },
+  { k: "Кнопка действия", v: "Написать" },
+];
+
+const HIGHLIGHTS = [
+  { label: "Гайды", icon: IconDoc },
+  { label: "Ниши", icon: IconTarget },
+  { label: "Отзывы", icon: IconSpark },
+  { label: "Старт", icon: IconFlame },
+];
+
+const AVATAR_PROMPT = `Minimal flat vector logo for a circular Instagram avatar: bold geometric funnel shape with a small four-point spark above it, deep navy background #0F1522, amber #FFB224 funnel, mint #3FD68F spark, thick clean shapes, high contrast, no text, centered composition with safe padding for circular crop --ar 1:1 --style raw`;
+
+const COVER_PROMPT = `Brand set for Instagram: 4 round highlight covers and 9 square post backgrounds, dark navy #0F1522, single amber #FFB224 accent, geometric funnel / arrow / spark shapes, thin grid lines, generous negative space, premium editorial minimalism, no faces, no text --ar 1:1 --style raw`;
+
+const NISHEVED_MARK: ReactNode = (
+  <svg viewBox="0 0 48 48" fill="none" className="w-9 h-9">
+    <path d="M9 10h30L28.5 23v11l-9 6V23L9 10z" fill="#ffb224" />
+    <path d="M38.5 3.5l1.4 3.1 3.1 1.4-3.1 1.4-1.4 3.1-1.4-3.1-3.1-1.4 3.1-1.4 1.4-3.1z" fill="#3fd68f" />
+  </svg>
+);
+
+
 
 export default function LaunchKit() {
   const [openPrompt, setOpenPrompt] = useState<string | null>("content");
-  const [brandId, setBrandId] = useState<string>(BRANDS[0].id);
+  const [handleIdx, setHandleIdx] = useState(0);
+  const [bioId, setBioId] = useState("funnel");
   const [codeword, setCodeword] = useState("ГАЙД");
   const [customHandle, setCustomHandle] = useState("");
   const [copied, setCopied] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const brand = useMemo(() => BRANDS.find((b) => b.id === brandId) ?? BRANDS[0], [brandId]);
-  const handle = customHandle.trim().replace(/^@/, "") || brand.handle;
+  const handle = customHandle.trim().replace(/^@/, "") || HANDLES[handleIdx];
   const kw = codeword.trim().toUpperCase() || "ГАЙД";
-
-  const bio = useMemo(
-    () => [brand.bio1, brand.bio2, `Пиши «${kw}» в Директ — пришлю гайд 📄`, `⬇ @${handle}`].join("\n"),
-    [brand, kw, handle],
-  );
-
-  const avatarPrompt = useMemo(
-    () =>
-      `Minimal flat vector illustration, ${brand.avatarConcept},\ndeep navy background #0F1522, ${brand.accent} accent, geometric shapes,\nclean modern style, high contrast, no text, centered composition,\nsuitable for a small circular avatar crop --ar 1:1 --style raw`,
-    [brand],
-  );
+  const bioVariant = useMemo(() => BIO_VARIANTS.find((b) => b.id === bioId) ?? BIO_VARIANTS[0], [bioId]);
+  const bio = useMemo(() => bioVariant.build(kw, handle), [bioVariant, kw, handle]);
+  const headerText = useMemo(() => HEADER_ROWS.map((r) => `${r.k}: ${r.v}`).join("\n"), []);
 
   const firstReel = useMemo(
     () =>
@@ -351,43 +294,89 @@ export default function LaunchKit() {
               <h3 className="font-display font-bold text-[15px]">Instagram-айдентика</h3>
             </div>
 
-            {/* brand picker */}
-            <div className="panel p-4 flex flex-wrap gap-2">
-              {BRANDS.map((b) => (
+            {/* profile header spec */}
+            <div className="panel p-4 sm:p-5">
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="w-8 h-8 rounded-lg bg-amber/12 border border-amber/25 flex items-center justify-center text-amber shrink-0">
+                    <IconInstagram size={15} />
+                  </span>
+                  <div className="min-w-0">
+                    <div className="font-display font-bold text-[13.5px]">Шапка профиля — что вписать</div>
+                    <div className="font-mono text-[9.5px] text-dim mt-0.5">бренд «Нишевед» · имя видно в поиске Instagram</div>
+                  </div>
+                </div>
                 <button
-                  key={b.id}
-                  onClick={() => setBrandId(b.id)}
-                  className={`font-mono text-[11px] px-3 py-2 rounded-lg border transition-all duration-200 cursor-pointer ${
-                    b.id === brandId
-                      ? "text-ink font-bold border-transparent shadow-[0_4px_18px_-4px_var(--color-amber)]"
-                      : "border-line text-mute hover:border-line2 hover:text-fog hover:-translate-y-0.5"
-                  }`}
-                  style={b.id === brandId ? { background: b.accent } : undefined}
+                  onClick={() => copy(headerText, "header")}
+                  className="inline-flex items-center gap-1.5 font-mono text-[9.5px] px-2.5 py-1.5 rounded-md border border-line text-mute hover:border-amber/50 hover:text-amber transition-all duration-200 cursor-pointer shrink-0"
                 >
-                  {b.name}
+                  {copied === "header" ? <IconCheck size={12} className="text-mint" /> : <IconCopy size={12} />}
+                  {copied === "header" ? "готово" : "всё"}
                 </button>
-              ))}
+              </div>
+              <div className="grid sm:grid-cols-2 gap-2.5">
+                {HEADER_ROWS.map((r) => (
+                  <div key={r.k} className="rounded-lg border border-line bg-ink px-3.5 py-3 transition-colors duration-200 hover:border-line2">
+                    <div className="font-mono text-[9px] tracking-[0.15em] text-dim uppercase">{r.k}</div>
+                    <div className={`font-display font-bold text-[12.5px] mt-1 break-words ${r.k.startsWith("Ссылка") ? "text-sky" : "text-fog"}`}>{r.v}</div>
+                  </div>
+                ))}
+              </div>
+              <p className="font-mono text-[10px] text-dim mt-3 leading-relaxed">
+                Бота в BotFather назови <span className="text-amber">nisheved_bot</span> — тогда ссылка из шапки совпадёт. Создашь бота — вставь ссылку в профиль.
+              </p>
+            </div>
+
+            {/* handle picker */}
+            <div className="panel p-4 flex flex-col gap-3">
+              <span className="font-mono text-[9.5px] tracking-[0.15em] text-dim uppercase">Ник — проверь и займи свободный</span>
+              <div className="flex flex-wrap gap-2">
+                {HANDLES.map((h, i) => (
+                  <button
+                    key={h}
+                    onClick={() => {
+                      setHandleIdx(i);
+                      setCustomHandle("");
+                    }}
+                    className={`font-mono text-[11.5px] px-3.5 py-2.5 rounded-lg border transition-all duration-200 cursor-pointer ${
+                      !customHandle.trim() && handleIdx === i
+                        ? "bg-amber text-ink border-amber font-bold shadow-[0_4px_18px_-4px_var(--color-amber)]"
+                        : "border-line text-mute hover:border-amber/40 hover:text-fog hover:-translate-y-0.5"
+                    }`}
+                  >
+                    @{h}
+                  </button>
+                ))}
+              </div>
+              <input
+                value={customHandle}
+                onChange={(e) => setCustomHandle(e.target.value)}
+                placeholder="или свой вариант: @..."
+                maxLength={24}
+                className="rounded-lg bg-ink border border-line px-3.5 py-2.5 font-mono text-[12.5px] text-fog outline-none focus:border-amber/60 transition-colors placeholder:text-dim"
+              />
             </div>
 
             {/* profile mock */}
-            <div key={brand.id} className="anim-in panel overflow-hidden">
-              <div className="h-16 relative" style={{ background: `linear-gradient(120deg, ${brand.accent}22, transparent 60%)` }}>
+            <div key={`${handle}-${bioId}`} className="anim-in panel overflow-hidden">
+              <div className="h-16 relative" style={{ background: "linear-gradient(120deg, rgba(255,178,36,0.14), transparent 60%)" }}>
                 <div className="absolute inset-x-0 bottom-0 h-px bg-line" />
               </div>
               <div className="px-5 pb-5">
                 <div className="flex items-end gap-4 -mt-9">
                   <div
                     className="w-[74px] h-[74px] rounded-full flex items-center justify-center border-4 border-ink shrink-0 transition-transform duration-300 hover:rotate-6"
-                    style={{ background: "radial-gradient(circle at 30% 30%, #1d2739, #0f1522)", boxShadow: `0 0 0 2px ${brand.accent}66` }}
+                    style={{ background: "radial-gradient(circle at 30% 30%, #1d2739, #0f1522)", boxShadow: "0 0 0 2px rgba(255,178,36,0.4)" }}
                   >
-                    {brand.mark}
+                    {NISHEVED_MARK}
                   </div>
                   <div className="flex-1 min-w-0 pb-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-display font-bold text-[14px] truncate">@{handle}</span>
-                      <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: brand.accent }} />
+                      <span className="font-display font-bold text-[14px] truncate">Нишевед</span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber shrink-0" />
                     </div>
-                    <div className="font-mono text-[10px] text-dim mt-0.5 truncate">{brand.tagline}</div>
+                    <div className="font-mono text-[10.5px] text-amber mt-0.5 truncate">@{handle}</div>
+                    <div className="font-mono text-[9.5px] text-dim mt-0.5 truncate">PDF-гайды · ниши · воронки без лица</div>
                   </div>
                 </div>
 
@@ -407,62 +396,118 @@ export default function LaunchKit() {
                 <pre className="mt-4 font-body text-[12px] leading-relaxed text-fog/90 whitespace-pre-wrap">{bio}</pre>
 
                 <div className="flex gap-2 mt-4">
-                  <span className="flex-1 text-center font-display font-bold text-[11.5px] rounded-lg bg-sky/15 text-sky border border-sky/30 py-2">
+                  <span className="flex-1 text-center font-display font-bold text-[11.5px] rounded-lg bg-sky/15 text-sky border border-sky/30 py-2 transition-colors duration-200 hover:bg-sky/25">
                     Подписаться
                   </span>
-                  <span className="flex-1 text-center font-display font-bold text-[11.5px] rounded-lg bg-line/50 text-fog py-2">
-                    Написать
+                  <span className="flex-1 text-center font-display font-bold text-[11.5px] rounded-lg bg-line/50 text-fog py-2 transition-colors duration-200 hover:bg-line">
+                    Гайд 📄
                   </span>
                 </div>
 
-                <div className="flex gap-4 mt-5">
+                <div className="flex gap-4 mt-5 flex-wrap">
                   {HIGHLIGHTS.map((h) => (
-                    <div key={h} className="flex flex-col items-center gap-1.5">
-                      <span
-                        className="w-11 h-11 rounded-full border-2 flex items-center justify-center transition-transform duration-300 hover:scale-110"
-                        style={{ borderColor: `${brand.accent}66` }}
-                      >
-                        <IconSpark size={14} className="text-mute" />
+                    <div key={h.label} className="flex flex-col items-center gap-1.5">
+                      <span className="w-11 h-11 rounded-full border-2 border-amber/40 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:border-amber/80">
+                        <h.icon size={14} className="text-amber" />
                       </span>
-                      <span className="font-mono text-[8.5px] text-dim">{h}</span>
+                      <span className="font-mono text-[8.5px] text-dim">{h.label}</span>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* inputs + copyables */}
-            <div className="panel p-4 flex flex-col gap-3">
-              <div className="grid sm:grid-cols-2 gap-3">
-                <label className="flex flex-col gap-1.5">
-                  <span className="font-mono text-[9.5px] tracking-[0.15em] text-dim uppercase">Кодовое слово</span>
-                  <input
-                    value={codeword}
-                    onChange={(e) => setCodeword(e.target.value)}
-                    maxLength={14}
-                    className="rounded-lg bg-ink border border-line px-3 py-2.5 font-mono text-[12.5px] text-amber tracking-[0.15em] outline-none focus:border-amber/60 transition-colors"
-                  />
-                </label>
-                <label className="flex flex-col gap-1.5">
-                  <span className="font-mono text-[9.5px] tracking-[0.15em] text-dim uppercase">Твой ник (необязательно)</span>
-                  <input
-                    value={customHandle}
-                    onChange={(e) => setCustomHandle(e.target.value)}
-                    placeholder={`@${brand.handle}`}
-                    maxLength={24}
-                    className="rounded-lg bg-ink border border-line px-3 py-2.5 font-mono text-[12.5px] text-fog outline-none focus:border-amber/60 transition-colors placeholder:text-dim"
-                  />
-                </label>
+            {/* bio variant + codeword */}
+            <div className="panel p-4 sm:p-5 flex flex-col gap-4">
+              <div>
+                <span className="font-mono text-[9.5px] tracking-[0.15em] text-dim uppercase block mb-2.5">Тон био — три варианта</span>
+                <div className="flex flex-wrap gap-2">
+                  {BIO_VARIANTS.map((b) => (
+                    <button
+                      key={b.id}
+                      onClick={() => setBioId(b.id)}
+                      className={`font-mono text-[11px] px-3.5 py-2 rounded-lg border transition-all duration-200 cursor-pointer ${
+                        bioId === b.id
+                          ? "bg-coral text-ink border-coral font-bold shadow-[0_4px_18px_-4px_var(--color-coral)]"
+                          : "border-line text-mute hover:border-coral/40 hover:text-fog hover:-translate-y-0.5"
+                      }`}
+                    >
+                      {b.label}
+                    </button>
+                  ))}
+                </div>
               </div>
+              <label className="flex flex-col gap-1.5">
+                <span className="font-mono text-[9.5px] tracking-[0.15em] text-dim uppercase">Кодовое слово — в био, рилсы и бота</span>
+                <input
+                  value={codeword}
+                  onChange={(e) => setCodeword(e.target.value)}
+                  maxLength={14}
+                  className="rounded-lg bg-ink border border-line px-3.5 py-2.5 font-mono text-[13px] text-amber tracking-[0.15em] outline-none focus:border-amber/60 transition-colors"
+                />
+              </label>
+              <p className="font-mono text-[10px] text-dim leading-relaxed -mt-1">
+                Одно слово везде: под рилсом, в био и как триггер бота. Сменишь — поменяй во всех трёх местах.
+              </p>
+            </div>
 
-              <div className="font-mono text-[9.5px] text-dim leading-relaxed">
-                {brand.name} · {brand.niches}
+            {/* avatar + covers */}
+            <div className="panel p-4 sm:p-5 flex flex-col gap-4">
+              <div className="flex items-center gap-2.5">
+                <IconSpark size={16} className="text-amber" />
+                <div>
+                  <div className="font-display font-bold text-[13.5px]">Аватар и обложки</div>
+                  <div className="font-mono text-[9.5px] text-dim mt-0.5">единый визуал бренда — генерируется по промптам ниже</div>
+                </div>
               </div>
+              <div className="flex items-center gap-4 rounded-xl border border-line bg-ink p-4">
+                <div
+                  className="w-16 h-16 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 hover:rotate-6 hover:scale-105"
+                  style={{ background: "radial-gradient(circle at 30% 30%, #1d2739, #0f1522)", boxShadow: "0 0 0 2px rgba(255,178,36,0.4)" }}
+                >
+                  {NISHEVED_MARK}
+                </div>
+                <ul className="space-y-1.5 min-w-0">
+                  {[
+                    "Аватар 1080×1080: тёмно-синий фон, воронка + искра",
+                    "4 обложки хайлайтсов: гайды · ниши · отзывы · старт",
+                    "9 подложек постов: тёмный фон, янтарные фигуры, сетка",
+                  ].map((s) => (
+                    <li key={s} className="flex gap-2 text-[11px] leading-relaxed text-mute">
+                      <span className="text-amber shrink-0">▸</span>
+                      <span className="min-w-0">{s}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-2.5">
+                {[
+                  { key: "avatar", label: "Промпт аватара", icon: IconSpark, cls: "text-amber", text: AVATAR_PROMPT },
+                  { key: "covers", label: "Промпт обложек", icon: IconInstagram, cls: "text-coral", text: COVER_PROMPT },
+                ].map((c) => (
+                  <button
+                    key={c.key}
+                    onClick={() => copy(c.text, c.key)}
+                    className="group flex items-center justify-between gap-3 rounded-lg border border-line bg-ink px-4 py-3 text-left transition-all duration-200 hover:border-amber/40 hover:-translate-y-0.5 cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2.5 min-w-0">
+                      <c.icon size={14} className={`${c.cls} shrink-0`} />
+                      <span className="font-display font-bold text-[11.5px] text-fog truncate">{c.label}</span>
+                    </span>
+                    <span className="font-mono text-[9px] text-dim group-hover:text-amber shrink-0 transition-colors">
+                      {copied === c.key ? "✓" : "копировать"}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
 
+            {/* copyables */}
+            <div className="panel p-4 flex flex-col gap-2.5">
               {[
-                { key: "bio", label: "Био для Instagram", text: bio },
-                { key: "avatar", label: "Промпт для аватара", text: avatarPrompt },
-                { key: "reel", label: "Сценарий первого рилса", text: firstReel },
+                { key: "bio", label: "Био для Instagram", icon: IconInstagram, cls: "text-coral", text: bio },
+                { key: "header2", label: "Шапка профиля (все поля)", icon: IconDoc, cls: "text-amber", text: headerText },
+                { key: "reel", label: "Сценарий первого рилса", icon: IconTelegram, cls: "text-sky", text: firstReel },
               ].map((c) => (
                 <button
                   key={c.key}
@@ -470,13 +515,7 @@ export default function LaunchKit() {
                   className="group flex items-center justify-between gap-3 rounded-lg border border-line bg-ink px-4 py-3 text-left transition-all duration-200 hover:border-amber/40 hover:translate-x-1 cursor-pointer"
                 >
                   <span className="flex items-center gap-2.5 min-w-0">
-                    {c.key === "bio" ? (
-                      <IconInstagram size={15} className="text-coral shrink-0" />
-                    ) : c.key === "avatar" ? (
-                      <IconSpark size={15} className="text-amber shrink-0" />
-                    ) : (
-                      <IconTelegram size={15} className="text-sky shrink-0" />
-                    )}
+                    <c.icon size={15} className={`${c.cls} shrink-0`} />
                     <span className="font-display font-bold text-[12px] text-fog truncate">{c.label}</span>
                   </span>
                   <span className="font-mono text-[9.5px] text-dim group-hover:text-amber shrink-0 transition-colors">
@@ -488,7 +527,7 @@ export default function LaunchKit() {
 
             <div className="flex items-center gap-2.5 font-mono text-[10.5px] text-dim leading-relaxed">
               <IconArrow size={14} className="text-amber shrink-0" />
-              Порядок: аватар → био → 3 хайлайтса → первый рилс с кодовым словом → ссылка на бота в шапке.
+              Порядок: занять ник → аватар → шапка → хайлайтсы → 9 подложек → первый рилс со словом «{kw}».
             </div>
           </div>
         </div>
