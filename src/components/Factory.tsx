@@ -183,17 +183,17 @@ export default function Factory({ preselectedId }: { preselectedId: string | nul
               30 дней. Копируй по главам или скачай файл — и на вёрстку в Canva.
             </p>
           </div>
-          <div className="flex gap-8 shrink-0">
+          <div className="flex gap-6 sm:gap-8 shrink-0">
             <div>
-              <div className="font-display font-extrabold text-3xl text-amber tabular-nums">{chapters.length}</div>
+              <div className="font-display font-extrabold text-2xl sm:text-3xl text-amber tabular-nums">{chapters.length}</div>
               <div className="font-mono text-[10px] text-dim mt-0.5">глав</div>
             </div>
             <div>
-              <div className="font-display font-extrabold text-3xl text-amber tabular-nums">~{words}</div>
+              <div className="font-display font-extrabold text-2xl sm:text-3xl text-amber tabular-nums">~{words}</div>
               <div className="font-mono text-[10px] text-dim mt-0.5">слов</div>
             </div>
             <div>
-              <div className="font-display font-extrabold text-3xl text-amber tabular-nums">~{pages}</div>
+              <div className="font-display font-extrabold text-2xl sm:text-3xl text-amber tabular-nums">~{pages}</div>
               <div className="font-mono text-[10px] text-dim mt-0.5">стр. в PDF</div>
             </div>
           </div>
