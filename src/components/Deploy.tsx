@@ -12,9 +12,9 @@ const PLATFORMS = [
     level: "перетащить папку",
     url: "app.netlify.com/drop",
     steps: [
-      "Собери проект локально: в папке проекта выполни npm install, затем npm run build — появится папка dist.",
+      "Найди папку dist (внутри index.html и assets). Если её нет — собери: npm install, затем npm run build.",
       "Открой app.netlify.com/drop в браузере.",
-      "Перетащи папку dist прямо в окно браузера — сайт опубликуется мгновенно.",
+      "Перетащи именно папку dist (не корень проекта!) прямо в окно браузера — сайт опубликуется мгновенно.",
       "Зарегистрируйся (иначе сайт живёт ~1 час): войди через GitHub или почту и «прикрепи» сайт к аккаунту.",
       "Готово: ссылка вида nisheved.netlify.app — её уже можно ставить в био @nisheved.",
     ],
@@ -120,6 +120,61 @@ export default function Deploy() {
             <div>
               <div className="font-display font-extrabold text-2xl sm:text-3xl text-amber tabular-nums">HTTPS</div>
               <div className="font-mono text-[10px] text-dim mt-0.5">бесплатно</div>
+            </div>
+          </div>
+        </div>
+
+        {/* аварийный блок: сайт не открывается */}
+        <div className="mb-8 rounded-2xl border-2 border-coral/50 bg-coral/6 p-5 sm:p-6 relative overflow-hidden">
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-coral via-amber to-coral" />
+          <div className="flex flex-col lg:flex-row gap-6">
+            <div className="lg:w-[38%] shrink-0">
+              <div className="font-mono text-[10px] tracking-[0.2em] text-coral mb-2">САЙТ ПУСТОЙ ИЛИ НЕ ОТКРЫВАЕТСЯ?</div>
+              <h3 className="font-display font-extrabold text-[16px] leading-snug">
+                9 из 10 раз причина одна: на Netlify Drop уехала <span className="text-coral">не та папка</span>
+              </h3>
+              <p className="font-mono text-[10.5px] text-mute leading-relaxed mt-3">
+                Исходники проекта — это «рецепт», а не «блюдо». Netlify умеет раздавать только готовый сайт. Если
+                перетащить корень проекта (где лежат src и package.json), страница будет пустой.
+              </p>
+              <div className="mt-4 rounded-xl border border-line bg-ink p-3.5 font-mono text-[10px] leading-relaxed">
+                <div className="text-mint mb-1">✓ правильная папка dist выглядит так:</div>
+                <div className="text-fog/80">dist/index.html</div>
+                <div className="text-fog/80">dist/assets/index-….js</div>
+                <div className="text-fog/80">dist/assets/index-….css</div>
+                <div className="text-coral mt-2">✗ если внутри src/, package.json, node_modules — это не она</div>
+              </div>
+            </div>
+            <div className="flex-1 grid sm:grid-cols-3 gap-3">
+              <div className="rounded-xl border border-line bg-ink p-4 flex flex-col">
+                <div className="font-mono text-[9.5px] tracking-[0.15em] text-mint mb-2">СПОСОБ 1 · 2 МИНУТЫ</div>
+                <div className="font-display font-bold text-[12.5px] mb-2">Перетащить папку dist</div>
+                <p className="font-mono text-[10px] text-mute leading-relaxed">
+                  В скачанном и распакованном проекте найди папку <span className="text-fog">dist</span> — готовый сайт
+                  уже собран. Удали старый деплой на Netlify и перетащи заново именно её.
+                </p>
+                <div className="mt-auto pt-3 font-mono text-[9px] text-dim">подходит, если dist есть в выгрузке</div>
+              </div>
+              <div className="rounded-xl border border-line bg-ink p-4 flex flex-col">
+                <div className="font-mono text-[9.5px] tracking-[0.15em] text-sky mb-2">СПОСОБ 2 · БЕЗ NODE.JS</div>
+                <div className="font-display font-bold text-[12.5px] mb-2">Netlify соберёт сам из GitHub</div>
+                <p className="font-mono text-[10px] text-mute leading-relaxed">
+                  Выгрузи проект в GitHub → на Netlify: «Add new site → Import from Git» → выбери репозиторий →
+                  Build command: <span className="text-fog">npm run build</span>, Publish directory:{" "}
+                  <span className="text-fog">dist</span>. Node на компьютере не нужен — сборка идёт на сервере Netlify.
+                </p>
+                <div className="mt-auto pt-3 font-mono text-[9px] text-dim">лучший вариант, если dist нет в выгрузке</div>
+              </div>
+              <div className="rounded-xl border border-line bg-ink p-4 flex flex-col">
+                <div className="font-mono text-[9.5px] tracking-[0.15em] text-amber mb-2">СПОСОБ 3 · 10 МИНУТ</div>
+                <div className="font-display font-bold text-[12.5px] mb-2">Поставить Node.js</div>
+                <p className="font-mono text-[10px] text-mute leading-relaxed">
+                  nodejs.org → версия LTS → «Далее-Далее-Готово». Потом в папке проекта:{" "}
+                  <span className="text-fog">npm install</span>, затем <span className="text-fog">npm run build</span> —
+                  появится dist, и способ 1 сработает.
+                </p>
+                <div className="mt-auto pt-3 font-mono text-[9px] text-dim">пригодится и для будущих правок</div>
+              </div>
             </div>
           </div>
         </div>
