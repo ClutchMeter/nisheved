@@ -6,11 +6,13 @@ import Calculator from "./components/Calculator";
 import ScalePlan from "./components/ScalePlan";
 import Roadmap from "./components/Roadmap";
 import LaunchKit from "./components/LaunchKit";
-import Deploy from "./components/Deploy";
+import AccessGate from "./components/AccessGate";
+import Library from "./components/Library";
 import { IconArrow, IconBot, IconComment, IconCross, IconDm, IconFunnel, IconReel, IconRuble, IconTelegram } from "./components/icons";
 import { useCountUp, useRevealObserver, useScramble } from "./lib/hooks";
 
 const NAV = [
+  { href: "#library", label: "Библиотека" },
   { href: "#matrix", label: "Матрица" },
   { href: "#quiz", label: "Квиз" },
   { href: "#factory", label: "Фабрика" },
@@ -19,7 +21,6 @@ const NAV = [
   { href: "#roadmap", label: "План" },
   { href: "#prompts", label: "Промпты" },
   { href: "#instagram", label: "Instagram" },
-  { href: "#deploy", label: "Хостинг" },
 ];
 
 const FUNNEL = [
@@ -27,7 +28,7 @@ const FUNNEL = [
   { icon: IconComment, label: "пишут кодовое слово", value: "1 500", sub: "≈1,5% зрителей", bar: "bg-sky", width: 62 },
   { icon: IconDm, label: "ссылка в личку", value: "1 500", sub: "автоответ бота", bar: "bg-sky", width: 56 },
   { icon: IconBot, label: "заходят в бота", value: "900", sub: "≈60% доходят", bar: "bg-mint", width: 40 },
-  { icon: IconRuble, label: "покупают PDF", value: "≈45", sub: "≈5% зашедших", bar: "bg-amber", width: 24 },
+  { icon: IconRuble, label: "берут подписку", value: "≈45", sub: "≈5% зашедших", bar: "bg-amber", width: 24 },
 ];
 
 const WORDS = ["НЕЙРО", "МАТРИЦА", "РИЛС", "УДАЛЁНКА", "ФРАЗЫ", "БЮДЖЕТ", "ТАБЛИЦА", "СОН", "МАНИКЮР", "СПИНА", "РЕЦЕПТ", "ЕВРОПА", "ГАЙД"];
@@ -183,6 +184,22 @@ function Hero() {
 export default function App() {
   useRevealObserver();
   const [pickedNiche, setPickedNiche] = useState<string | null>(null);
+  const [locked, setLocked] = useState<boolean>(() => {
+    try {
+      return !localStorage.getItem("nisheved-unlocked");
+    } catch {
+      return true;
+    }
+  });
+
+  const handleUnlock = useCallback((mode: "code" | "demo") => {
+    try {
+      localStorage.setItem("nisheved-unlocked", mode);
+    } catch {
+      /* приватный режим — работаем без сохранения */
+    }
+    setLocked(false);
+  }, []);
   const [menuOpen, setMenuOpen] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -205,7 +222,12 @@ export default function App() {
   return (
     <div className="relative min-h-screen bg-ink text-fog font-body">
       <div className="noise-layer" aria-hidden />
+      {locked && <AccessGate onUnlock={handleUnlock} />}
 
+      <div
+        aria-hidden={locked}
+        className={`transition-all duration-700 ${locked ? "blur-[10px] opacity-40 pointer-events-none select-none scale-[0.995]" : ""}`}
+      >
       <nav className="sticky top-0 z-50 border-b border-line/80 bg-ink/85 backdrop-blur-md">
         <div
           className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-amber to-coral"
@@ -278,6 +300,7 @@ export default function App() {
 
       <main id="top">
         <Hero />
+        <Library />
         <NicheMatrix preselectedId={pickedNiche} />
         <Quiz onPick={handlePick} />
         <Factory preselectedId={pickedNiche} />
@@ -285,7 +308,6 @@ export default function App() {
         <ScalePlan />
         <Roadmap />
         <LaunchKit />
-        <Deploy />
       </main>
 
       <footer className="border-t border-line bg-ink2/60">
@@ -317,6 +339,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 }
