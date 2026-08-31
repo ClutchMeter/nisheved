@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IconCheck, IconClock } from "./icons";
+import { IconCheck, IconClock, IconLock } from "./icons";
 
 const DAYS = [
   { d: "День 1", t: "Выбор ниши и проверка", h: "1–2 ч", points: ["Прогони квиз и открой топ-1 в матрице.", "Вбей кодовое слово и продукт в поиск Instagram: есть живые аккаунты с просмотрами — спрос живой.", "Проверь конкурентов: что в шапке, какой чек, что пишут в комментариях."] },
@@ -21,7 +21,7 @@ const CHECKLIST = [
   "Три рилса смонтированы и ждут публикации",
 ];
 
-export default function Roadmap() {
+export default function Roadmap({ demo = false }: { demo?: boolean }) {
   const [done, setDone] = useState<Record<number, boolean>>({});
   const count = Object.values(done).filter(Boolean).length;
   const pct = Math.round((count / CHECKLIST.length) * 100);
@@ -47,12 +47,12 @@ export default function Roadmap() {
 
         <div className="reveal grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {DAYS.slice(0, 4).map((d) => (
-            <DayCard key={d.d} d={d} />
+            <DayCard key={d.d} d={d} demo={demo} />
           ))}
         </div>
         <div className="reveal grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           {DAYS.slice(4).map((d) => (
-            <DayCard key={d.d} d={d} />
+            <DayCard key={d.d} d={d} demo={demo} />
           ))}
         </div>
 
@@ -99,7 +99,7 @@ export default function Roadmap() {
   );
 }
 
-function DayCard({ d }: { d: (typeof DAYS)[number] }) {
+function DayCard({ d, demo = false }: { d: (typeof DAYS)[number]; demo?: boolean }) {
   return (
     <div className="group rounded-2xl border-2 border-paperink/12 bg-white p-5 transition-all duration-300 hover:border-coral/50 hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px_rgba(20,27,40,0.35)]">
       <div className="flex items-center justify-between mb-3">
@@ -109,15 +109,22 @@ function DayCard({ d }: { d: (typeof DAYS)[number] }) {
           {d.h}
         </span>
       </div>
-      <div className="font-display font-bold text-[14.5px] mb-3 leading-snug">{d.t}</div>
-      <ul className="space-y-2">
-        {d.points.map((p, k) => (
-          <li key={k} className="flex gap-2.5 text-[11.5px] leading-relaxed text-paperink/75">
-            <span className="w-1.5 h-1.5 rounded-full bg-coral shrink-0 mt-1.5 transition-transform duration-300 group-hover:scale-125" />
-            {p}
-          </li>
-        ))}
-      </ul>
+      <div className="font-display font-bold text-[14.5px] leading-snug">{d.t}</div>
+      {demo ? (
+        <p className="mt-3 inline-flex items-center gap-1.5 font-mono text-[9.5px] text-paperink/40">
+          <IconLock size={11} />
+          подробные шаги — в полной версии
+        </p>
+      ) : (
+        <ul className="space-y-2 mt-3">
+          {d.points.map((p, k) => (
+            <li key={k} className="flex gap-2.5 text-[11.5px] leading-relaxed text-paperink/75">
+              <span className="w-1.5 h-1.5 rounded-full bg-coral shrink-0 mt-1.5 transition-transform duration-300 group-hover:scale-125" />
+              {p}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { IconArrow, IconCheck, IconCopy, IconDoc, IconFlame, IconInstagram, IconSpark, IconTarget, IconTelegram } from "./icons";
+import { IconArrow, IconCheck, IconCopy, IconDoc, IconFlame, IconInstagram, IconLock, IconSpark, IconTarget, IconTelegram } from "./icons";
 
 /* ---------------- prompts ---------------- */
 
@@ -178,8 +178,10 @@ const NISHEVED_MARK: ReactNode = (
 
 
 
-export default function LaunchKit() {
-  const [openPrompt, setOpenPrompt] = useState<string | null>("content");
+export default function LaunchKit({ demo = false }: { demo?: boolean }) {
+  const [openPrompt, setOpenPrompt] = useState<string | null>(demo ? null : "content");
+  const [lockedHint, setLockedHint] = useState<string | null>(null);
+  const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [handleIdx, setHandleIdx] = useState(0);
   const [bioId, setBioId] = useState("funnel");
   const [codeword, setCodeword] = useState("ГАЙД");
@@ -200,6 +202,16 @@ export default function LaunchKit() {
       `В шапке профиля: ссылка на бота @${handle}`,
     [kw, handle],
   );
+
+  const tryPrompt = (id: string) => {
+    if (demo) {
+      if (hintTimer.current) clearTimeout(hintTimer.current);
+      setLockedHint(id);
+      hintTimer.current = setTimeout(() => setLockedHint(null), 2400);
+      return;
+    }
+    setOpenPrompt(openPrompt === id ? null : id);
+  };
 
   const copy = (text: string, key: string) => {
     if (timer.current) clearTimeout(timer.current);
@@ -249,7 +261,7 @@ export default function LaunchKit() {
                     className={`panel overflow-hidden transition-all duration-300 ${isOpen ? "border-amber/40" : "hover:border-line2"}`}
                   >
                     <button
-                      onClick={() => setOpenPrompt(isOpen ? null : p.id)}
+                      onClick={() => tryPrompt(p.id)}
                       className="w-full flex items-start gap-3 px-4 py-3.5 text-left cursor-pointer group"
                     >
                       <span className="font-mono text-[9px] px-2 py-1 rounded bg-line/60 text-mute tracking-wide shrink-0 mt-0.5">
@@ -261,8 +273,20 @@ export default function LaunchKit() {
                         </span>
                         {p.badge && <span className="block font-mono text-[9.5px] text-dim mt-0.5">{p.badge}</span>}
                       </span>
-                      <span className={`text-dim transition-transform duration-300 shrink-0 mt-1 ${isOpen ? "rotate-90" : ""}`}>▸</span>
+                      {demo ? (
+                        <IconLock size={14} className="text-dim shrink-0 mt-1" />
+                      ) : (
+                        <span className={`text-dim transition-transform duration-300 shrink-0 mt-1 ${isOpen ? "rotate-90" : ""}`}>▸</span>
+                      )}
                     </button>
+                    {demo && lockedHint === p.id && (
+                      <div className="anim-in px-4 pb-3.5 -mt-1">
+                        <span className="inline-flex items-center gap-2 font-mono text-[9.5px] text-amber bg-amber/10 border border-amber/30 rounded-md px-2.5 py-1.5">
+                          <IconLock size={11} />
+                          промпты открываются в полной версии — забери код в боте
+                        </span>
+                      </div>
+                    )}
 
                     {isOpen && (
                       <div className="anim-in px-4 pb-4">

@@ -8,7 +8,7 @@ import Roadmap from "./components/Roadmap";
 import LaunchKit from "./components/LaunchKit";
 import AccessGate from "./components/AccessGate";
 import Library from "./components/Library";
-import { IconArrow, IconBot, IconComment, IconCross, IconDm, IconFunnel, IconReel, IconRuble, IconTelegram } from "./components/icons";
+import { IconArrow, IconBot, IconComment, IconCross, IconDm, IconFunnel, IconLock, IconReel, IconRuble, IconTelegram } from "./components/icons";
 import { useCountUp, useRevealObserver, useScramble } from "./lib/hooks";
 
 const NAV = [
@@ -199,6 +199,15 @@ export default function App() {
     }
   });
 
+  const exitDemo = useCallback(() => {
+    try {
+      localStorage.removeItem("nisheved-unlocked");
+    } catch {
+      /* приватный режим — работаем без сохранения */
+    }
+    setLocked(true);
+  }, []);
+
   const handleUnlock = useCallback((mode: "code" | "demo") => {
     try {
       localStorage.setItem("nisheved-unlocked", mode);
@@ -231,6 +240,19 @@ export default function App() {
     <div className="relative min-h-screen bg-ink text-fog font-body">
       <div className="noise-layer" aria-hidden />
       {locked && <AccessGate onUnlock={handleUnlock} />}
+
+      {demoMode && !locked && (
+        <div className="fixed bottom-4 inset-x-0 z-[70] flex justify-center px-4 pointer-events-none">
+          <button
+            onClick={exitDemo}
+            className="group pointer-events-auto inline-flex items-center gap-2.5 rounded-full bg-amber text-ink font-display font-extrabold text-[13px] px-6 py-3.5 shadow-[0_12px_44px_-8px_rgba(255,178,36,0.65)] transition-all duration-300 hover:bg-coral hover:-translate-y-1 cursor-pointer"
+          >
+            <IconLock size={15} className="transition-transform duration-300 group-hover:rotate-12" />
+            Получить полный доступ
+            <span className="w-2 h-2 rounded-full bg-ink/80 animate-pulse" aria-hidden />
+          </button>
+        </div>
+      )}
 
       <div
         aria-hidden={locked}
@@ -311,11 +333,11 @@ export default function App() {
         <Library demo={demoMode} />
         <NicheMatrix preselectedId={pickedNiche} />
         <Quiz onPick={handlePick} />
-        <Factory preselectedId={pickedNiche} />
+        <Factory preselectedId={pickedNiche} demo={demoMode} onUpgrade={exitDemo} />
         <Calculator />
         <ScalePlan />
-        <Roadmap />
-        <LaunchKit />
+        <Roadmap demo={demoMode} />
+        <LaunchKit demo={demoMode} />
       </main>
 
       <footer className="border-t border-line bg-ink2/60">

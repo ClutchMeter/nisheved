@@ -3,7 +3,7 @@ import { ACCENT_TEXT, NICHES } from "../data/niches";
 import type { Niche } from "../data/niches";
 import { chapterWords, exportHeader, fullChapters, serializeChapter } from "../data/content";
 import type { Block } from "../data/content";
-import { IconArrow, IconBot, IconCheck, IconCopy, IconDoc, IconReel } from "./icons";
+import { IconArrow, IconBot, IconCheck, IconCopy, IconDoc, IconLock, IconReel } from "./icons";
 
 const KW2: Record<string, string> = {
   neuro: "ПРОМПТ", tarot: "АРКАН", reels: "СЦЕНАРИЙ", remote: "ОФФЕР", english: "СУРВАЙВ",
@@ -93,18 +93,18 @@ function BlockView({ b }: { b: Block }) {
     case "table":
       return (
         <div className="rounded-lg border border-line overflow-hidden">
-          <table className="w-full text-left">
+          <table className="w-full table-fixed text-left">
             <thead>
               <tr className="bg-line/40">
-                <th className="font-mono text-[9.5px] tracking-[0.12em] text-amber px-3 py-2 font-normal">{b.head?.[0]}</th>
+                <th className="font-mono text-[9.5px] tracking-[0.12em] text-amber px-3 py-2 font-normal w-[38%]">{b.head?.[0]}</th>
                 <th className="font-mono text-[9.5px] tracking-[0.12em] text-amber px-3 py-2 font-normal">{b.head?.[1]}</th>
               </tr>
             </thead>
             <tbody>
               {(b.rows ?? []).map((r, k) => (
                 <tr key={k} className={`border-t border-line/60 transition-colors duration-200 hover:bg-line/20 ${k % 2 ? "bg-ink2/40" : ""}`}>
-                  <td className="px-3 py-2 text-[11.5px] font-medium text-fog/90 align-top">{r[0]}</td>
-                  <td className="px-3 py-2 text-[11.5px] text-mute align-top font-mono">{r[1]}</td>
+                  <td className="px-3 py-2 text-[11.5px] font-medium text-fog/90 align-top break-words [overflow-wrap:anywhere]">{r[0]}</td>
+                  <td className="px-3 py-2 text-[11.5px] text-mute align-top font-mono break-words [overflow-wrap:anywhere]">{r[1]}</td>
                 </tr>
               ))}
             </tbody>
@@ -116,7 +116,15 @@ function BlockView({ b }: { b: Block }) {
   }
 }
 
-export default function Factory({ preselectedId }: { preselectedId: string | null }) {
+export default function Factory({
+  preselectedId,
+  demo = false,
+  onUpgrade,
+}: {
+  preselectedId: string | null;
+  demo?: boolean;
+  onUpgrade?: () => void;
+}) {
   const [nicheId, setNicheId] = useState<string>(NICHES[0].id);
   const [tab, setTab] = useState<TabId>("pdf");
   const [open, setOpen] = useState<Record<number, boolean>>({ 0: true });
@@ -200,7 +208,7 @@ export default function Factory({ preselectedId }: { preselectedId: string | nul
         </div>
 
         <div className="grid lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-4 flex flex-col gap-5">
+          <div className="lg:col-span-4 min-w-0 flex flex-col gap-5">
             <div className="panel p-4 flex flex-wrap gap-2">
               {NICHES.map((n) => (
                 <button
@@ -253,7 +261,7 @@ export default function Factory({ preselectedId }: { preselectedId: string | nul
             </div>
           </div>
 
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-8 min-w-0">
             <div className="panel overflow-hidden flex flex-col h-full">
               <div className="flex items-center justify-between border-b border-line px-4 sm:px-5">
                 <div className="flex min-w-0 overflow-x-auto scrollbar-none">
@@ -284,7 +292,7 @@ export default function Factory({ preselectedId }: { preselectedId: string | nul
                 )}
               </div>
 
-              <div key={`${tab}-${nicheId}`} className="anim-in p-4 sm:p-6 flex-1 max-h-[640px] overflow-y-auto scrollbar-none">
+              <div key={`${tab}-${nicheId}`} className="anim-in p-4 sm:p-6 flex-1 min-w-0 max-w-full max-h-[640px] overflow-y-auto overflow-x-hidden scrollbar-none">
                 {tab === "pdf" && (
                   <div className="space-y-3">
                     {chapters.map((c, i) => (
@@ -293,22 +301,41 @@ export default function Factory({ preselectedId }: { preselectedId: string | nul
                           <span className="font-display font-extrabold text-amber/70 text-lg leading-none w-6 shrink-0">{i + 1}</span>
                           <span className="font-display font-bold text-[13.5px] text-fog flex-1 min-w-0">{c.title}</span>
                           <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-line/60 text-dim shrink-0 hidden sm:inline">~{c.pages} стр.</span>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              copy(serializeChapter(c, i), `ch${i}`);
-                            }}
-                            className="font-mono text-[9.5px] px-2 py-1 rounded border border-line text-dim sm:opacity-0 sm:group-hover:opacity-100 hover:border-amber/50 hover:text-amber transition-all duration-200 cursor-pointer shrink-0"
-                          >
-                            {copied === `ch${i}` ? "✓" : "копировать"}
-                          </button>
+                          {!demo && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                copy(serializeChapter(c, i), `ch${i}`);
+                              }}
+                              className="font-mono text-[9.5px] px-2 py-1 rounded border border-line text-dim sm:opacity-0 sm:group-hover:opacity-100 hover:border-amber/50 hover:text-amber transition-all duration-200 cursor-pointer shrink-0"
+                            >
+                              {copied === `ch${i}` ? "✓" : "копировать"}
+                            </button>
+                          )}
                           <span className={`text-dim transition-transform duration-300 shrink-0 ${open[i] ? "rotate-90" : ""}`}>▸</span>
                         </div>
                         {open[i] && (
-                          <div className="anim-in px-4 sm:px-5 pb-5 pt-1 border-t border-line/60 space-y-3.5">
-                            {c.blocks.map((b, k) => (
-                              <BlockView key={k} b={b} />
-                            ))}
+                          <div className="anim-in relative px-4 sm:px-5 pb-5 pt-1 border-t border-line/60">
+                            <div
+                              className={`space-y-3.5 ${
+                                demo ? "blur-[7px] opacity-50 select-none pointer-events-none" : ""
+                              }`}
+                              aria-hidden={demo}
+                            >
+                              {c.blocks.map((b, k) => (
+                                <BlockView key={k} b={b} />
+                              ))}
+                            </div>
+                            {demo && (
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="flex items-center gap-2.5 rounded-xl border border-amber/40 bg-ink/90 backdrop-blur-sm px-5 py-3.5 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.8)]">
+                                  <IconLock size={16} className="text-amber shrink-0" />
+                                  <span className="font-display font-bold text-[12px] text-fog whitespace-nowrap">
+                                    Текст доступен в полной версии
+                                  </span>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
@@ -386,23 +413,34 @@ export default function Factory({ preselectedId }: { preselectedId: string | nul
                 <p className="font-mono text-[10.5px] text-dim hidden sm:block">
                   {tab === "pdf" ? "Каждую главу можно копировать отдельно." : "Копируется по одному."}
                 </p>
-                <div className="flex items-center gap-2.5">
+                {demo ? (
                   <button
-                    onClick={download}
-                    className="inline-flex items-center gap-2 rounded-lg border border-line text-mute font-display font-bold text-[12.5px] px-4 py-3 transition-all duration-300 hover:border-mint/50 hover:text-mint hover:-translate-y-0.5 cursor-pointer"
-                  >
-                    {copied === "dl" ? <IconCheck size={15} className="text-mint" /> : <IconDoc size={15} />}
-                    {copied === "dl" ? "Скачано" : "Скачать .md"}
-                  </button>
-                  <button
-                    onClick={() => copy(fullText(), "all")}
+                    onClick={onUpgrade}
                     className="group inline-flex items-center gap-2 rounded-lg bg-amber text-ink font-display font-bold text-[12.5px] px-5 py-3 transition-all duration-300 hover:bg-coral hover:-translate-y-0.5 cursor-pointer"
                   >
-                    {copied === "all" ? <IconCheck size={15} /> : <IconCopy size={15} />}
-                    {copied === "all" ? "Всё скопировано" : "Скопировать всё"}
+                    <IconLock size={15} className="transition-transform duration-300 group-hover:rotate-12" />
+                    Получить полный доступ
                     <IconArrow size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                   </button>
-                </div>
+                ) : (
+                  <div className="flex items-center gap-2.5">
+                    <button
+                      onClick={download}
+                      className="inline-flex items-center gap-2 rounded-lg border border-line text-mute font-display font-bold text-[12.5px] px-4 py-3 transition-all duration-300 hover:border-mint/50 hover:text-mint hover:-translate-y-0.5 cursor-pointer"
+                    >
+                      {copied === "dl" ? <IconCheck size={15} className="text-mint" /> : <IconDoc size={15} />}
+                      {copied === "dl" ? "Скачано" : "Скачать .md"}
+                    </button>
+                    <button
+                      onClick={() => copy(fullText(), "all")}
+                      className="group inline-flex items-center gap-2 rounded-lg bg-amber text-ink font-display font-bold text-[12.5px] px-5 py-3 transition-all duration-300 hover:bg-coral hover:-translate-y-0.5 cursor-pointer"
+                    >
+                      {copied === "all" ? <IconCheck size={15} /> : <IconCopy size={15} />}
+                      {copied === "all" ? "Всё скопировано" : "Скопировать всё"}
+                      <IconArrow size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
