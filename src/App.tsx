@@ -3,17 +3,22 @@ import NicheMatrix from "./components/NicheMatrix";
 import Quiz from "./components/Quiz";
 import Factory from "./components/Factory";
 import Calculator from "./components/Calculator";
+import ScalePlan from "./components/ScalePlan";
 import Roadmap from "./components/Roadmap";
 import LaunchKit from "./components/LaunchKit";
-import { IconArrow, IconBot, IconComment, IconCross, IconDm, IconFunnel, IconReel, IconRuble, IconTelegram } from "./components/icons";
+import AccessGate from "./components/AccessGate";
+import Library from "./components/Library";
+import { IconArrow, IconBot, IconComment, IconCross, IconDm, IconFunnel, IconLock, IconReel, IconRuble, IconTelegram } from "./components/icons";
 import { useCountUp, useRevealObserver, useScramble } from "./lib/hooks";
 
 const NAV = [
+  { href: "#library", label: "Библиотека" },
   { href: "#matrix", label: "Матрица" },
   { href: "#quiz", label: "Квиз" },
   { href: "#factory", label: "Фабрика" },
   { href: "#calculator", label: "Калькулятор" },
-  { href: "#roadmap", label: "План 7 дней" },
+  { href: "#scale", label: "100к+" },
+  { href: "#roadmap", label: "План" },
   { href: "#prompts", label: "Промпты" },
   { href: "#instagram", label: "Instagram" },
 ];
@@ -23,7 +28,7 @@ const FUNNEL = [
   { icon: IconComment, label: "пишут кодовое слово", value: "1 500", sub: "≈1,5% зрителей", bar: "bg-sky", width: 62 },
   { icon: IconDm, label: "ссылка в личку", value: "1 500", sub: "автоответ бота", bar: "bg-sky", width: 56 },
   { icon: IconBot, label: "заходят в бота", value: "900", sub: "≈60% доходят", bar: "bg-mint", width: 40 },
-  { icon: IconRuble, label: "покупают PDF", value: "≈45", sub: "≈5% зашедших", bar: "bg-amber", width: 24 },
+  { icon: IconRuble, label: "берут подписку", value: "≈45", sub: "≈5% зашедших", bar: "bg-amber", width: 24 },
 ];
 
 const WORDS = ["НЕЙРО", "МАТРИЦА", "РИЛС", "УДАЛЁНКА", "ФРАЗЫ", "БЮДЖЕТ", "ТАБЛИЦА", "СОН", "МАНИКЮР", "СПИНА", "РЕЦЕПТ", "ЕВРОПА", "ГАЙД"];
@@ -179,6 +184,39 @@ function Hero() {
 export default function App() {
   useRevealObserver();
   const [pickedNiche, setPickedNiche] = useState<string | null>(null);
+  const [locked, setLocked] = useState<boolean>(() => {
+    try {
+      return !localStorage.getItem("nisheved-unlocked");
+    } catch {
+      return true;
+    }
+  });
+  const [demoMode, setDemoMode] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem("nisheved-unlocked") === "demo";
+    } catch {
+      return false;
+    }
+  });
+
+  const exitDemo = useCallback(() => {
+    try {
+      localStorage.removeItem("nisheved-unlocked");
+    } catch {
+      /* приватный режим — работаем без сохранения */
+    }
+    setLocked(true);
+  }, []);
+
+  const handleUnlock = useCallback((mode: "code" | "demo") => {
+    try {
+      localStorage.setItem("nisheved-unlocked", mode);
+    } catch {
+      /* приватный режим — работаем без сохранения */
+    }
+    setDemoMode(mode === "demo");
+    setLocked(false);
+  }, []);
   const [menuOpen, setMenuOpen] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -201,7 +239,25 @@ export default function App() {
   return (
     <div className="relative min-h-screen bg-ink text-fog font-body">
       <div className="noise-layer" aria-hidden />
+      {locked && <AccessGate onUnlock={handleUnlock} />}
 
+      {demoMode && !locked && (
+        <div className="fixed bottom-4 inset-x-0 z-[70] flex justify-center px-4 pointer-events-none">
+          <button
+            onClick={exitDemo}
+            className="group pointer-events-auto inline-flex items-center gap-2.5 rounded-full bg-amber text-ink font-display font-extrabold text-[13px] px-6 py-3.5 shadow-[0_12px_44px_-8px_rgba(255,178,36,0.65)] transition-all duration-300 hover:bg-coral hover:-translate-y-1 cursor-pointer"
+          >
+            <IconLock size={15} className="transition-transform duration-300 group-hover:rotate-12" />
+            Получить полный доступ
+            <span className="w-2 h-2 rounded-full bg-ink/80 animate-pulse" aria-hidden />
+          </button>
+        </div>
+      )}
+
+      <div
+        aria-hidden={locked}
+        className={`transition-all duration-700 ${locked ? "blur-[10px] opacity-40 pointer-events-none select-none scale-[0.995]" : ""}`}
+      >
       <nav className="sticky top-0 z-50 border-b border-line/80 bg-ink/85 backdrop-blur-md">
         <div
           className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-amber to-coral"
@@ -274,12 +330,14 @@ export default function App() {
 
       <main id="top">
         <Hero />
+        <Library demo={demoMode} />
         <NicheMatrix preselectedId={pickedNiche} />
         <Quiz onPick={handlePick} />
-        <Factory preselectedId={pickedNiche} />
+        <Factory preselectedId={pickedNiche} demo={demoMode} onUpgrade={exitDemo} />
         <Calculator />
-        <Roadmap />
-        <LaunchKit />
+        <ScalePlan />
+        <Roadmap demo={demoMode} />
+        <LaunchKit demo={demoMode} />
       </main>
 
       <footer className="border-t border-line bg-ink2/60">
@@ -311,6 +369,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 }

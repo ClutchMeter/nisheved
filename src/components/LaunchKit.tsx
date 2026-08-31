@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { IconArrow, IconCheck, IconCopy, IconDoc, IconFlame, IconInstagram, IconSpark, IconTarget, IconTelegram } from "./icons";
+import { IconArrow, IconCheck, IconCopy, IconDoc, IconFlame, IconInstagram, IconLock, IconSpark, IconTarget, IconTelegram } from "./icons";
 
 /* ---------------- prompts ---------------- */
 
@@ -128,14 +128,14 @@ interface BioVariant {
   build: (kw: string, handle: string) => string;
 }
 
-const HANDLES = ["nisheved", "nisheved.pro", "nisheved.lab"];
+const HANDLES = ["vash_nik", "brand_lab", "guide_pro"];
 
 const BIO_VARIANTS: BioVariant[] = [
   {
     id: "funnel",
     label: "Воронка",
     build: (kw, h) =>
-      `Нишевед · PDF-гайды без воды 🔎\nРилсы без лица → бот → гайд за 60 сек\nПиши «${kw}» в Директ — пришлю 📄\n⬇ @${h}`,
+      `Нишевед · PDF-гайды без воды 🔎\nРилсы без лица → бот → доступ за 60 сек\nПиши «${kw}» в Директ — пришлю код 🔑\n⬇ @${h}`,
   },
   {
     id: "expert",
@@ -151,10 +151,10 @@ const BIO_VARIANTS: BioVariant[] = [
   },
 ];
 
-const HEADER_ROWS = [
+const headerRows = (handle: string) => [
   { k: "Имя (виден в поиске)", v: "Нишевед · PDF-гайды" },
   { k: "Категория", v: "Цифровой автор" },
-  { k: "Ссылка в шапке", v: "https://t.me/nisheved_bot" },
+  { k: "Ссылка в шапке", v: `https://t.me/${handle}_bot` },
   { k: "Кнопка действия", v: "Написать" },
 ];
 
@@ -178,8 +178,10 @@ const NISHEVED_MARK: ReactNode = (
 
 
 
-export default function LaunchKit() {
-  const [openPrompt, setOpenPrompt] = useState<string | null>("content");
+export default function LaunchKit({ demo = false }: { demo?: boolean }) {
+  const [openPrompt, setOpenPrompt] = useState<string | null>(demo ? null : "content");
+  const [lockedHint, setLockedHint] = useState<string | null>(null);
+  const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [handleIdx, setHandleIdx] = useState(0);
   const [bioId, setBioId] = useState("funnel");
   const [codeword, setCodeword] = useState("ГАЙД");
@@ -191,7 +193,7 @@ export default function LaunchKit() {
   const kw = codeword.trim().toUpperCase() || "ГАЙД";
   const bioVariant = useMemo(() => BIO_VARIANTS.find((b) => b.id === bioId) ?? BIO_VARIANTS[0], [bioId]);
   const bio = useMemo(() => bioVariant.build(kw, handle), [bioVariant, kw, handle]);
-  const headerText = useMemo(() => HEADER_ROWS.map((r) => `${r.k}: ${r.v}`).join("\n"), []);
+  const headerText = useMemo(() => headerRows(handle).map((r) => `${r.k}: ${r.v}`).join("\n"), [handle]);
 
   const firstReel = useMemo(
     () =>
@@ -200,6 +202,16 @@ export default function LaunchKit() {
       `В шапке профиля: ссылка на бота @${handle}`,
     [kw, handle],
   );
+
+  const tryPrompt = (id: string) => {
+    if (demo) {
+      if (hintTimer.current) clearTimeout(hintTimer.current);
+      setLockedHint(id);
+      hintTimer.current = setTimeout(() => setLockedHint(null), 2400);
+      return;
+    }
+    setOpenPrompt(openPrompt === id ? null : id);
+  };
 
   const copy = (text: string, key: string) => {
     if (timer.current) clearTimeout(timer.current);
@@ -249,7 +261,7 @@ export default function LaunchKit() {
                     className={`panel overflow-hidden transition-all duration-300 ${isOpen ? "border-amber/40" : "hover:border-line2"}`}
                   >
                     <button
-                      onClick={() => setOpenPrompt(isOpen ? null : p.id)}
+                      onClick={() => tryPrompt(p.id)}
                       className="w-full flex items-start gap-3 px-4 py-3.5 text-left cursor-pointer group"
                     >
                       <span className="font-mono text-[9px] px-2 py-1 rounded bg-line/60 text-mute tracking-wide shrink-0 mt-0.5">
@@ -261,8 +273,20 @@ export default function LaunchKit() {
                         </span>
                         {p.badge && <span className="block font-mono text-[9.5px] text-dim mt-0.5">{p.badge}</span>}
                       </span>
-                      <span className={`text-dim transition-transform duration-300 shrink-0 mt-1 ${isOpen ? "rotate-90" : ""}`}>▸</span>
+                      {demo ? (
+                        <IconLock size={14} className="text-dim shrink-0 mt-1" />
+                      ) : (
+                        <span className={`text-dim transition-transform duration-300 shrink-0 mt-1 ${isOpen ? "rotate-90" : ""}`}>▸</span>
+                      )}
                     </button>
+                    {demo && lockedHint === p.id && (
+                      <div className="anim-in px-4 pb-3.5 -mt-1">
+                        <span className="inline-flex items-center gap-2 font-mono text-[9.5px] text-amber bg-amber/10 border border-amber/30 rounded-md px-2.5 py-1.5">
+                          <IconLock size={11} />
+                          промпты открываются в полной версии — забери код в боте
+                        </span>
+                      </div>
+                    )}
 
                     {isOpen && (
                       <div className="anim-in px-4 pb-4">
@@ -315,7 +339,7 @@ export default function LaunchKit() {
                 </button>
               </div>
               <div className="grid sm:grid-cols-2 gap-2.5">
-                {HEADER_ROWS.map((r) => (
+                {headerRows(handle).map((r) => (
                   <div key={r.k} className="rounded-lg border border-line bg-ink px-3.5 py-3 transition-colors duration-200 hover:border-line2">
                     <div className="font-mono text-[9px] tracking-[0.15em] text-dim uppercase">{r.k}</div>
                     <div className={`font-display font-bold text-[12.5px] mt-1 break-words ${r.k.startsWith("Ссылка") ? "text-sky" : "text-fog"}`}>{r.v}</div>
@@ -323,7 +347,7 @@ export default function LaunchKit() {
                 ))}
               </div>
               <p className="font-mono text-[10px] text-dim mt-3 leading-relaxed">
-                Бота в BotFather назови <span className="text-amber">nisheved_bot</span> — тогда ссылка из шапки совпадёт. Создашь бота — вставь ссылку в профиль.
+                Займи ник и создай бота <span className="text-amber">@{handle}_bot</span> в BotFather, подключи его к сценарию и оплате из «Фабрики», затем вставь ссылку <span className="text-sky">t.me/{handle}_bot</span> в шапку профиля.
               </p>
             </div>
 

@@ -38,23 +38,38 @@ export function useRevealObserver() {
 export function useCountUp(target: number, duration = 1200): [React.RefObject<HTMLSpanElement>, string] {
   const ref = useRef<HTMLSpanElement>(null);
   const [value, setValue] = useState(0);
+  const valueRef = useRef(0);
   const started = useRef(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    const animateTo = (to: number, dur: number) => {
+      const from = valueRef.current;
+      const t0 = performance.now();
+      const tick = (now: number) => {
+        const p = Math.min(1, (now - t0) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const v = Math.round(from + (to - from) * eased);
+        valueRef.current = v;
+        setValue(v);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+
+    // уже в поле зрения — плавно докручиваем до нового значения
+    if (started.current) {
+      animateTo(target, 380);
+      return;
+    }
+
     const io = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !started.current) {
           started.current = true;
-          const t0 = performance.now();
-          const tick = (now: number) => {
-            const p = Math.min(1, (now - t0) / duration);
-            const eased = 1 - Math.pow(1 - p, 3);
-            setValue(Math.round(target * eased));
-            if (p < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
+          animateTo(target, duration);
           io.disconnect();
         }
       },
