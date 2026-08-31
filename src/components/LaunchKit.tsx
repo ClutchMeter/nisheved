@@ -154,7 +154,7 @@ const BIO_VARIANTS: BioVariant[] = [
 const headerRows = (handle: string) => [
   { k: "Имя (виден в поиске)", v: "Нишевед · PDF-гайды" },
   { k: "Категория", v: "Цифровой автор" },
-  { k: "Ссылка в шапке", v: `https://t.me/${handle}_bot` },
+  { k: "Ссылка в шапке", v: `https://t.me/${handle}bot` },
   { k: "Кнопка действия", v: "Написать" },
 ];
 
@@ -347,7 +347,7 @@ export default function LaunchKit({ demo = false }: { demo?: boolean }) {
                 ))}
               </div>
               <p className="font-mono text-[10px] text-dim mt-3 leading-relaxed">
-                Займи ник и создай бота <span className="text-amber">@{handle}_bot</span> в BotFather, подключи его к сценарию и оплате из «Фабрики», затем вставь ссылку <span className="text-sky">t.me/{handle}_bot</span> в шапку профиля.
+                Займи ник и создай бота <span className="text-amber">@{handle}bot</span> в BotFather, подключи его к сценарию и оплате из «Фабрики», затем вставь ссылку <span className="text-sky">t.me/{handle}bot</span> в шапку профиля.
               </p>
             </div>
 

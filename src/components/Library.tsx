@@ -84,7 +84,7 @@ export default function Library({ demo = false }: { demo?: boolean }) {
             <IconDoc size={17} className="text-sky shrink-0" />
             <p className="font-mono text-[11px] text-mute leading-relaxed">
               <span className="text-sky font-bold">Демо-режим.</span> Листай и изучай гайды — скачивание PDF и .md
-              откроется после оформления подписки в <span className="text-fog">@nisheved_bot</span>.
+              откроется после оформления подписки в <span className="text-fog">@nishevedbot</span>.
             </p>
           </div>
         )}
