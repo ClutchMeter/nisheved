@@ -191,6 +191,13 @@ export default function App() {
       return true;
     }
   });
+  const [demoMode, setDemoMode] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem("nisheved-unlocked") === "demo";
+    } catch {
+      return false;
+    }
+  });
 
   const handleUnlock = useCallback((mode: "code" | "demo") => {
     try {
@@ -198,6 +205,7 @@ export default function App() {
     } catch {
       /* приватный режим — работаем без сохранения */
     }
+    setDemoMode(mode === "demo");
     setLocked(false);
   }, []);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -300,7 +308,7 @@ export default function App() {
 
       <main id="top">
         <Hero />
-        <Library />
+        <Library demo={demoMode} />
         <NicheMatrix preselectedId={pickedNiche} />
         <Quiz onPick={handlePick} />
         <Factory preselectedId={pickedNiche} />

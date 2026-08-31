@@ -10,7 +10,7 @@ const ACCENT_HEX: Record<string, string> = {
   sky: "#58b7ff",
 };
 
-export default function Library() {
+export default function Library({ demo = false }: { demo?: boolean }) {
   const [state, setState] = useState<Record<string, "idle" | "busy" | "ok">>({});
 
   const stats = useMemo(() => {
@@ -25,6 +25,7 @@ export default function Library() {
   }, []);
 
   const download = (id: string, kind: "pdf" | "md") => {
+    if (demo) return;
     const n = NICHES.find((x) => x.id === id);
     if (!n || state[id] === "busy") return;
     setState((s) => ({ ...s, [id]: "busy" }));
@@ -78,6 +79,16 @@ export default function Library() {
           </div>
         </div>
 
+        {demo && (
+          <div className="reveal mb-8 flex items-center gap-3 rounded-xl border border-sky/35 bg-sky/6 px-5 py-4">
+            <IconDoc size={17} className="text-sky shrink-0" />
+            <p className="font-mono text-[11px] text-mute leading-relaxed">
+              <span className="text-sky font-bold">Демо-режим.</span> Листай и изучай гайды — скачивание PDF и .md
+              откроется после оформления подписки в <span className="text-fog">@nisheved_bot</span>.
+            </p>
+          </div>
+        )}
+
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {NICHES.map((n, i) => {
             const hex = ACCENT_HEX[n.accent] ?? "#ffb224";
@@ -117,16 +128,23 @@ export default function Library() {
                   <div className="mt-auto pt-5 flex items-center gap-2.5">
                     <button
                       onClick={() => download(n.id, "pdf")}
-                      disabled={st === "busy"}
-                      className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-amber text-ink font-display font-bold text-[11.5px] px-4 py-3 transition-all duration-300 hover:bg-coral hover:-translate-y-0.5 disabled:opacity-60 cursor-pointer"
+                      disabled={st === "busy" || demo}
+                      className={`flex-1 inline-flex items-center justify-center gap-2 rounded-lg font-display font-bold text-[11.5px] px-4 py-3 transition-all duration-300 ${
+                        demo
+                          ? "bg-line/40 text-dim cursor-not-allowed"
+                          : "bg-amber text-ink hover:bg-coral hover:-translate-y-0.5 disabled:opacity-60 cursor-pointer"
+                      }`}
                     >
                       {st === "ok" ? <IconCheck size={14} /> : <IconDownload size={14} />}
-                      {st === "busy" ? "Формирую…" : st === "ok" ? "Сохранён" : "Скачать PDF"}
+                      {st === "busy" ? "Формирую…" : st === "ok" ? "Сохранён" : demo ? "Демо" : "Скачать PDF"}
                     </button>
                     <button
                       onClick={() => download(n.id, "md")}
-                      title="Скачать исходный текст в Markdown"
-                      className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-line text-mute font-mono text-[10px] px-3.5 py-3 transition-all duration-200 hover:border-mint/50 hover:text-mint cursor-pointer"
+                      disabled={demo}
+                      title={demo ? "Недоступно в демо-режиме" : "Скачать исходный текст в Markdown"}
+                      className={`inline-flex items-center justify-center gap-1.5 rounded-lg border font-mono text-[10px] px-3.5 py-3 transition-all duration-200 ${
+                        demo ? "border-line/50 text-line2 cursor-not-allowed" : "border-line text-mute hover:border-mint/50 hover:text-mint cursor-pointer"
+                      }`}
                     >
                       .md
                     </button>

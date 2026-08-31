@@ -128,7 +128,7 @@ interface BioVariant {
   build: (kw: string, handle: string) => string;
 }
 
-const HANDLES = ["nisheved", "nisheved.pro", "nisheved.lab"];
+const HANDLES = ["vash_nik", "brand_lab", "guide_pro"];
 
 const BIO_VARIANTS: BioVariant[] = [
   {
@@ -151,10 +151,10 @@ const BIO_VARIANTS: BioVariant[] = [
   },
 ];
 
-const HEADER_ROWS = [
+const headerRows = (handle: string) => [
   { k: "Имя (виден в поиске)", v: "Нишевед · PDF-гайды" },
   { k: "Категория", v: "Цифровой автор" },
-  { k: "Ссылка в шапке", v: "https://t.me/nisheved_bot" },
+  { k: "Ссылка в шапке", v: `https://t.me/${handle}_bot` },
   { k: "Кнопка действия", v: "Написать" },
 ];
 
@@ -191,7 +191,7 @@ export default function LaunchKit() {
   const kw = codeword.trim().toUpperCase() || "ГАЙД";
   const bioVariant = useMemo(() => BIO_VARIANTS.find((b) => b.id === bioId) ?? BIO_VARIANTS[0], [bioId]);
   const bio = useMemo(() => bioVariant.build(kw, handle), [bioVariant, kw, handle]);
-  const headerText = useMemo(() => HEADER_ROWS.map((r) => `${r.k}: ${r.v}`).join("\n"), []);
+  const headerText = useMemo(() => headerRows(handle).map((r) => `${r.k}: ${r.v}`).join("\n"), [handle]);
 
   const firstReel = useMemo(
     () =>
@@ -315,7 +315,7 @@ export default function LaunchKit() {
                 </button>
               </div>
               <div className="grid sm:grid-cols-2 gap-2.5">
-                {HEADER_ROWS.map((r) => (
+                {headerRows(handle).map((r) => (
                   <div key={r.k} className="rounded-lg border border-line bg-ink px-3.5 py-3 transition-colors duration-200 hover:border-line2">
                     <div className="font-mono text-[9px] tracking-[0.15em] text-dim uppercase">{r.k}</div>
                     <div className={`font-display font-bold text-[12.5px] mt-1 break-words ${r.k.startsWith("Ссылка") ? "text-sky" : "text-fog"}`}>{r.v}</div>
@@ -323,7 +323,7 @@ export default function LaunchKit() {
                 ))}
               </div>
               <p className="font-mono text-[10px] text-dim mt-3 leading-relaxed">
-                <span className="text-mint font-bold">✓ @nisheved и @nisheved_bot уже созданы.</span> Осталось: подключить бота к сценарию и оплате из «Фабрики» и вставить ссылку t.me/nisheved_bot в шапку профиля.
+                Займи ник и создай бота <span className="text-amber">@{handle}_bot</span> в BotFather, подключи его к сценарию и оплате из «Фабрики», затем вставь ссылку <span className="text-sky">t.me/{handle}_bot</span> в шапку профиля.
               </p>
             </div>
 

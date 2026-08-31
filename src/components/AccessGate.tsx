@@ -89,7 +89,7 @@ export default function AccessGate({ onUnlock }: Props) {
                       setError(false);
                     }}
                     onKeyDown={(e) => e.key === "Enter" && submit()}
-                    placeholder="NISH2026"
+                    placeholder="XXXX2026"
                     maxLength={12}
                     className={`flex-1 min-w-0 rounded-lg bg-ink border px-4 py-3.5 font-mono text-[15px] tracking-[0.28em] text-amber outline-none transition-colors placeholder:text-line2 placeholder:tracking-[0.2em] ${
                       error ? "border-coral/70" : "border-line focus:border-amber/60"
