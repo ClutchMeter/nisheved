@@ -294,7 +294,7 @@ function titlePage(doc: Doc, n: Niche, chapters: Chapter[], totalPages: number) 
   text(doc, M + 14, by + 5, "F1", 9.5, "Одна глава — один день. Чек-листы и таблицы применяй сразу: знание без", GRAY);
   text(doc, M + 14, by - 8, "F1", 9.5, "действия — дорогое хобби. Справочные цифры — ориентиры, сверяй со своей нишей.", GRAY);
 
-  text(doc, M, 108, "F1", 9, "Собрано на платформе «Нишевед» · @nisheved · подписка на библиотеку гайдов", LGRAY);
+  text(doc, M, 108, "F1", 9, "Собрано на платформе «Нишевед» · @nisheved · доступ к библиотеке гайдов", LGRAY);
 }
 
 function chapterPages(doc: Doc, chapters: Chapter[]) {

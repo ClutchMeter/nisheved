@@ -28,7 +28,7 @@ const FUNNEL = [
   { icon: IconComment, label: "пишут кодовое слово", value: "1 500", sub: "≈1,5% зрителей", bar: "bg-sky", width: 62 },
   { icon: IconDm, label: "ссылка в личку", value: "1 500", sub: "автоответ бота", bar: "bg-sky", width: 56 },
   { icon: IconBot, label: "заходят в бота", value: "900", sub: "≈60% доходят", bar: "bg-mint", width: 40 },
-  { icon: IconRuble, label: "берут подписку", value: "≈45", sub: "≈5% зашедших", bar: "bg-amber", width: 24 },
+  { icon: IconRuble, label: "оплачивают доступ", value: "≈45", sub: "≈5% зашедших", bar: "bg-amber", width: 24 },
 ];
 
 const WORDS = ["НЕЙРО", "МАТРИЦА", "РИЛС", "УДАЛЁНКА", "ФРАЗЫ", "БЮДЖЕТ", "ТАБЛИЦА", "СОН", "МАНИКЮР", "СПИНА", "РЕЦЕПТ", "ЕВРОПА", "ГАЙД"];
