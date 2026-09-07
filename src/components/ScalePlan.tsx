@@ -221,33 +221,7 @@ export default function ScalePlan() {
               </div>
             ))}
 
-            <div className="panel rounded-2xl p-5 border-coral/30 relative overflow-hidden">
-              <div className="absolute -right-8 -top-8 w-28 h-28 rounded-full bg-coral/12 blur-2xl" />
-              <div className="flex items-center gap-2.5 mb-3">
-                <IconSpark size={15} className="text-coral" />
-                <span className="font-display font-bold text-[13px]">Эта неделя с @nisheved</span>
-              </div>
-              <ol className="space-y-2">
-                {[
-                  <>Подключи <b className="text-fog">@nishevedbot</b> к автоответам: ManyChat ловит кодовое слово и шлёт ссылку в Директ.</>,
-                  <>Залей первый PDF в бота, включи оплату Telegram Stars и сделай тестовую покупку сам(а).</>,
-                  <>9 постов-подложек + био из «Запуска» → первые 10 рилсов по плану из «Фабрики».</>,
-                  <>Каждому покупателю через 3 дня — сообщение про апселл: лестница начинается с первой продажи.</>,
-                ].map((t, i) => (
-                  <li key={i} className="flex gap-3 text-[11.5px] leading-relaxed text-mute">
-                    <span className="font-mono text-[10px] font-bold text-coral shrink-0 pt-0.5">{i + 1}.</span>
-                    <span>{t}</span>
-                  </li>
-                ))}
-              </ol>
-              <a
-                href="#factory"
-                className="mt-4 group inline-flex items-center gap-2 font-mono text-[10.5px] text-coral hover:text-amber transition-colors duration-200"
-              >
-                взять текст гайда и 10 рилсов
-                <IconArrow size={12} className="transition-transform duration-300 group-hover:translate-x-1" />
-              </a>
-            </div>
+
 
             <div className="flex items-start gap-3 font-mono text-[10.5px] text-dim leading-relaxed">
               <IconRuble size={14} className="text-amber shrink-0 mt-0.5" />
