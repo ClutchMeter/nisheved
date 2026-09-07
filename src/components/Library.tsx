@@ -84,7 +84,7 @@ export default function Library({ demo = false }: { demo?: boolean }) {
             <IconDoc size={17} className="text-sky shrink-0" />
             <p className="font-mono text-[11px] text-mute leading-relaxed">
               <span className="text-sky font-bold">Демо-режим.</span> Листай и изучай гайды — скачивание PDF и .md
-              откроется после оформления подписки в <span className="text-fog">@nishevedbot</span>.
+              откроется после оплаты доступа в <span className="text-fog">@nishevedbot</span>.
             </p>
           </div>
         )}
@@ -159,7 +159,7 @@ export default function Library({ demo = false }: { demo?: boolean }) {
           {[
             { t: "Для себя", d: "Выбрал нишу по душе — скачал гайд и идёшь по плану на 30 дней. Чек-листы в конце глав не дают слиться." },
             { t: "Под свой бренд", d: "Скачай .md, добавь свои примеры и скриншоты, сверстай в Canva за вечер — и продавай под своим ником." },
-            { t: "Как витрину метода", d: "Показывай раздел покупателям подписки: 12 продуктов, калькулятор и план запуска — это и есть ценность «Нишеведа»." },
+            { t: "Как витрину метода", d: "Показывай раздел покупателям доступа: 12 продуктов, калькулятор и план запуска — это и есть ценность «Нишеведа»." },
           ].map((c, i) => (
             <div key={c.t} className="rounded-xl border border-line bg-ink2/60 p-5 transition-colors duration-300 hover:border-amber/35">
               <div className="font-mono text-[9px] tracking-[0.2em] text-amber mb-2">0{i + 1}</div>

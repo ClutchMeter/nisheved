@@ -53,7 +53,7 @@ export default function AccessGate({ onUnlock }: Props) {
                 </div>
                 <span className="ml-auto flex items-center gap-1.5 font-mono text-[9.5px] text-coral border border-coral/35 bg-coral/8 px-2.5 py-1.5 rounded-full">
                   <IconLock size={11} />
-                  по подписке
+                  единоразовая оплата
                 </span>
               </div>
 
@@ -61,7 +61,7 @@ export default function AccessGate({ onUnlock }: Props) {
                 Доступ открывается <span className="text-amber">кодом из бота</span>
               </h1>
               <p className="mt-3 text-[12.5px] leading-relaxed text-mute">
-                Подпишись в <span className="text-fog font-semibold">@nishevedbot</span> — бот пришлёт персональный код.
+                Оплати доступ в <span className="text-fog font-semibold">@nishevedbot</span> — бот пришлёт персональный код.
                 Один код = одно место, не передавай его.
               </p>
 
@@ -105,7 +105,7 @@ export default function AccessGate({ onUnlock }: Props) {
                 </div>
                 {error && (
                   <p className="anim-in font-mono text-[10px] text-coral mt-2.5 leading-relaxed">
-                    Код не найден. Оплати подписку в @nishevedbot — бот выдаст код мгновенно, или войди в демо ниже.
+                    Код не найден. Оплати доступ в @nishevedbot — бот выдаст код мгновенно, или войди в демо ниже.
                   </p>
                 )}
               </div>
@@ -115,10 +115,10 @@ export default function AccessGate({ onUnlock }: Props) {
                   href="https://t.me/nishevedbot"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky/40 bg-sky/8 text-sky font-display font-bold text-[12px] px-4 py-3 transition-all duration-300 hover:bg-sky/15 hover:-translate-y-0.5"
+                  className="group inline-flex items-center justify-center gap-2 rounded-lg bg-amber text-ink font-display font-extrabold text-[13px] px-5 py-3.5 transition-all duration-300 hover:bg-coral hover:-translate-y-0.5 shadow-[0_8px_28px_-8px_rgba(255,178,36,0.6)]"
                 >
                   <IconTelegram size={15} />
-                  Взять код в боте · от 990 ₽
+                  Оплатить 1 990 ₽
                 </a>
                 <button
                   onClick={() => onUnlock("demo")}
@@ -131,7 +131,7 @@ export default function AccessGate({ onUnlock }: Props) {
           </div>
 
           <p className="font-mono text-[9.5px] text-dim text-center mt-5 leading-relaxed">
-            подписка: 990 ₽/мес · 1 990 ₽/квартал · 4 990 ₽ навсегда
+            Единоразовая оплата · Полный доступ навсегда
           </p>
         </div>
       </div>
