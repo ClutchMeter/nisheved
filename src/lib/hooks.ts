@@ -1,40 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-export function usePrefersReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    const fn = (e: MediaQueryListEvent) => setReduced(e.matches);
-    mq.addEventListener("change", fn);
-    return () => mq.removeEventListener("change", fn);
-  }, []);
-  return reduced;
-}
-
-export function useRevealObserver() {
-  useEffect(() => {
-    const els = Array.from(document.querySelectorAll<HTMLElement>(".reveal"));
-    if (!("IntersectionObserver" in window)) {
-      els.forEach((el) => el.classList.add("in-view"));
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            (e.target as HTMLElement).classList.add("in-view");
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-}
-
 export function useCountUp(target: number, duration = 1200): [React.RefObject<HTMLSpanElement>, string] {
   const ref = useRef<HTMLSpanElement>(null);
   const [value, setValue] = useState(0);
@@ -59,7 +24,6 @@ export function useCountUp(target: number, duration = 1200): [React.RefObject<HT
       requestAnimationFrame(tick);
     };
 
-    // уже в поле зрения — плавно докручиваем до нового значения
     if (started.current) {
       animateTo(target, 380);
       return;
@@ -80,6 +44,29 @@ export function useCountUp(target: number, duration = 1200): [React.RefObject<HT
   }, [target, duration]);
 
   return [ref, value.toLocaleString("ru-RU")];
+}
+
+export function useRevealObserver() {
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll<HTMLElement>(".reveal"));
+    if (!("IntersectionObserver" in window)) {
+      els.forEach((el) => el.classList.add("in-view"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            (e.target as HTMLElement).classList.add("in-view");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
 }
 
 export function useScramble(text: string, delay = 0): string {
@@ -125,4 +112,16 @@ export function useScramble(text: string, delay = 0): string {
   }, [text, delay, reduced]);
 
   return out;
+}
+
+function usePrefersReducedMotion(): boolean {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    const fn = (e: MediaQueryListEvent) => setReduced(e.matches);
+    mq.addEventListener("change", fn);
+    return () => mq.removeEventListener("change", fn);
+  }, []);
+  return reduced;
 }

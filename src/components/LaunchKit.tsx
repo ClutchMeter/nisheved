@@ -176,8 +176,6 @@ const NISHEVED_MARK: ReactNode = (
   </svg>
 );
 
-
-
 export default function LaunchKit({ demo = false }: { demo?: boolean }) {
   const [openPrompt, setOpenPrompt] = useState<string | null>(demo ? null : "content");
   const [lockedHint, setLockedHint] = useState<string | null>(null);
@@ -235,11 +233,10 @@ export default function LaunchKit({ demo = false }: { demo?: boolean }) {
               <span className="h-px w-10 bg-sky/50" />
             </div>
             <h2 className="font-display font-extrabold text-[clamp(1.7rem,3.6vw,2.9rem)] leading-[1.08] tracking-tight max-w-xl">
-              Промпты для PDF и <span className="text-amber">Instagram-запуск</span>
+              Промпты для PDF и <span className="text-amber">Instagram-айдентика</span>
             </h2>
             <p className="mt-4 text-[14px] leading-relaxed text-mute max-w-xl">
-              Готовые промпты, чтобы собрать свёрстанный PDF нейросетями, и айдентика аккаунта: имя, аватар, био и
-              первый рилс. Всё копируется одной кнопкой.
+              Готовые промпты, чтобы собрать свёрстанный PDF нейросетями, и айдентика аккаунта: имя, аватар, био и первый рилс. Всё копируется одной кнопкой — вставляй в Claude, Canva или Midjourney.
             </p>
           </div>
         </div>
@@ -256,10 +253,7 @@ export default function LaunchKit({ demo = false }: { demo?: boolean }) {
               {PROMPTS.map((p) => {
                 const isOpen = openPrompt === p.id;
                 return (
-                  <div
-                    key={p.id}
-                    className={`panel overflow-hidden transition-all duration-300 ${isOpen ? "border-amber/40" : "hover:border-line2"}`}
-                  >
+                  <div key={p.id} className={`panel overflow-hidden transition-all duration-300 ${isOpen ? "border-amber/40" : "hover:border-line2"}`}>
                     <button
                       onClick={() => tryPrompt(p.id)}
                       className="w-full flex items-start gap-3 px-4 py-3.5 text-left cursor-pointer group"
@@ -288,7 +282,7 @@ export default function LaunchKit({ demo = false }: { demo?: boolean }) {
                       </div>
                     )}
 
-                    {isOpen && (
+                    {isOpen && !demo && (
                       <div className="anim-in px-4 pb-4">
                         <p className="text-[12px] leading-relaxed text-mute mb-3">{p.desc}</p>
                         <div className="relative">

@@ -8,6 +8,8 @@ import Roadmap from "./components/Roadmap";
 import LaunchKit from "./components/LaunchKit";
 import AccessGate from "./components/AccessGate";
 import Library from "./components/Library";
+import Privacy from "./components/Privacy";
+import Terms from "./components/Terms";
 import { IconArrow, IconBot, IconComment, IconCross, IconDm, IconFunnel, IconLock, IconReel, IconRuble, IconTelegram } from "./components/icons";
 import { useCountUp, useRevealObserver, useScramble } from "./lib/hooks";
 
@@ -186,14 +188,14 @@ export default function App() {
   const [pickedNiche, setPickedNiche] = useState<string | null>(null);
   const [locked, setLocked] = useState<boolean>(() => {
     try {
-      return !localStorage.getItem("nisheved-unlocked");
+      return !sessionStorage.getItem("nisheved-unlocked");
     } catch {
       return true;
     }
   });
   const [demoMode, setDemoMode] = useState<boolean>(() => {
     try {
-      return localStorage.getItem("nisheved-unlocked") === "demo";
+      return sessionStorage.getItem("nisheved-unlocked") === "demo";
     } catch {
       return false;
     }
@@ -201,7 +203,7 @@ export default function App() {
 
   const exitDemo = useCallback(() => {
     try {
-      localStorage.removeItem("nisheved-unlocked");
+      sessionStorage.removeItem("nisheved-unlocked");
     } catch {
       /* приватный режим — работаем без сохранения */
     }
@@ -210,7 +212,7 @@ export default function App() {
 
   const handleUnlock = useCallback((mode: "code" | "demo") => {
     try {
-      localStorage.setItem("nisheved-unlocked", mode);
+      sessionStorage.setItem("nisheved-unlocked", mode);
     } catch {
       /* приватный режим — работаем без сохранения */
     }
@@ -235,6 +237,17 @@ export default function App() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Всегда показывать экран входа при загрузке страницы
+  useEffect(() => {
+    exitDemo();
+  }, []);
+
+  // Роутинг для юридических страниц
+  if (typeof window !== "undefined") {
+    if (window.location.hash === "#/privacy") return <Privacy />;
+    if (window.location.hash === "#/terms") return <Terms />;
+  }
 
   return (
     <div className="relative min-h-screen bg-ink text-fog font-body">
@@ -331,7 +344,7 @@ export default function App() {
       <main id="top">
         <Hero />
         <Library demo={demoMode} />
-        <NicheMatrix preselectedId={pickedNiche} />
+        <NicheMatrix preselectedId={pickedNiche} demo={demoMode} />
         <Quiz onPick={handlePick} />
         <Factory preselectedId={pickedNiche} demo={demoMode} onUpgrade={exitDemo} />
         <Calculator />
@@ -366,6 +379,16 @@ export default function App() {
           <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center font-mono text-[10px] text-dim">
             <IconTelegram size={12} className="text-sky shrink-0" />
             воронка: рилс с кодовым словом → автоответ → бот → оплата Stars → PDF в чат
+          </div>
+        </div>
+        <div className="border-t border-line/60">
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center font-mono text-[10px]">
+            <a href="#/privacy" className="text-mute hover:text-amber transition-colors duration-200">
+              Политика конфиденциальности
+            </a>
+            <a href="#/terms" className="text-mute hover:text-amber transition-colors duration-200">
+              Условия использования
+            </a>
           </div>
         </div>
       </footer>

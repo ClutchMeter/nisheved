@@ -139,7 +139,6 @@ export default function Factory({
   const allOpen = chapters.every((_, i) => open[i]);
 
   if (preselectedId && preselectedId !== nicheId && NICHES.some((n) => n.id === preselectedId)) {
-    // синхронизация с квизом
     setTimeout(() => setNicheId(preselectedId), 0);
   }
 
@@ -184,11 +183,10 @@ export default function Factory({
               <span className="h-px w-10 bg-amber/50" />
             </div>
             <h2 className="font-display font-extrabold text-[clamp(1.7rem,3.6vw,2.9rem)] leading-[1.08] tracking-tight max-w-xl">
-              Текст гайда уже <span className="text-amber">написан</span>
+              Весь текст гайда — <span className="text-amber">уже написан</span>
             </h2>
             <p className="mt-4 text-[14px] leading-relaxed text-mute max-w-xl">
-              Выбери нишу — получи готовый текст PDF: метод по шагам, справочная таблица, ускорители, ошибки, план на
-              30 дней. Копируй по главам или скачай файл — и на вёрстку в Canva.
+              Выбирай нишу — и получай готовый текст PDF: метод по шагам, справочные таблицы, ускорители, ошибки, план на 30 дней. Копируй по главам или скачивай целиком — и сразу на вёрстку в Canva.
             </p>
           </div>
           <div className="flex gap-6 sm:gap-8 shrink-0">
@@ -381,13 +379,13 @@ export default function Factory({
 
                 {tab === "reels" && (
                   <div className="overflow-x-auto scrollbar-none -mx-1">
-                    <table className="w-full min-w-[560px] border-separate border-spacing-y-2 px-1">
+                    <table className="w-full border-separate border-spacing-y-2 px-1">
                       <thead>
                         <tr className="font-mono text-[9.5px] text-dim tracking-[0.15em] text-left">
-                          <th className="font-normal pb-1 pl-3 w-14">ДЕНЬ</th>
-                          <th className="font-normal pb-1 w-40">ФОРМАТ</th>
+                          <th className="font-normal pb-1 pl-3 w-12 sm:w-14">ДЕНЬ</th>
+                          <th className="font-normal pb-1 w-28 sm:w-40">ФОРМАТ</th>
                           <th className="font-normal pb-1">ТЕКСТ НА ВИДЕО</th>
-                          <th className="font-normal pb-1 pr-3 w-24 text-right">СЛОВО</th>
+                          <th className="font-normal pb-1 pr-3 w-16 sm:w-24 text-right">СЛОВО</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -397,7 +395,10 @@ export default function Factory({
                             <td className="border-y border-line bg-ink px-3 py-3 font-mono text-[11px] text-mint whitespace-nowrap">{r.f}</td>
                             <td className="border-y border-line bg-ink px-3 py-3 text-[12.5px] text-fog/90">{r.h}</td>
                             <td className="rounded-r-lg border border-line border-l-0 bg-ink px-3 py-3 text-right transition-colors duration-200 group-hover:bg-line/40">
-                              <button onClick={() => copy(r.k, `kw${i}`)} className="font-mono text-[10.5px] font-bold text-coral hover:text-amber transition-colors cursor-pointer">
+                              <button
+                                onClick={() => copy(r.k, `kw${i}`)}
+                                className="font-mono text-[10.5px] font-bold text-coral hover:text-amber transition-colors cursor-pointer"
+                              >
                                 {copied === `kw${i}` ? "✓" : r.k}
                               </button>
                             </td>

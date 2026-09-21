@@ -33,7 +33,6 @@ export default function AccessGate({ onUnlock }: Props) {
       <div className="grid-layer absolute inset-0 opacity-70 pointer-events-none" aria-hidden />
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[620px] h-[420px] rounded-full bg-amber/10 blur-[130px]" />
-        <div className="absolute bottom-[-160px] left-[12%] w-[420px] h-[420px] rounded-full bg-coral/8 blur-[120px]" />
       </div>
 
       <div className="relative min-h-full flex items-center justify-center px-5 py-10">
@@ -110,12 +109,23 @@ export default function AccessGate({ onUnlock }: Props) {
                 )}
               </div>
 
+              <p className="mt-4 font-mono text-[9.5px] text-dim leading-relaxed text-center">
+                Нажимая кнопку «Войти», вы соглашаетесь с{" "}
+                <a href="#/terms" className="text-amber hover:text-amber2 transition-colors duration-200">
+                  Условиями использования
+                </a>{" "}
+                и{" "}
+                <a href="#/privacy" className="text-amber hover:text-amber2 transition-colors duration-200">
+                  Политикой конфиденциальности
+                </a>
+              </p>
+
               <div className="mt-6 pt-5 border-t border-line flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                 <a
                   href="https://t.me/nishevedbot"
                   target="_blank"
                   rel="noreferrer"
-                  className="group inline-flex items-center justify-center gap-2 rounded-lg bg-amber text-ink font-display font-extrabold text-[13px] px-5 py-3.5 transition-all duration-300 hover:bg-coral hover:-translate-y-0.5 shadow-[0_8px_28px_-8px_rgba(255,178,36,0.6)]"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky/40 bg-sky/8 text-sky font-display font-bold text-[12px] px-4 py-3 transition-all duration-300 hover:bg-sky/15 hover:-translate-y-0.5"
                 >
                   <IconTelegram size={15} />
                   Оплатить 1 990 ₽

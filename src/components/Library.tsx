@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { ACCENT_TEXT, NICHES } from "../data/niches";
-import { chapterWords, downloadNicheMd, downloadNichePdf, fullChapters } from "../lib/pdf";
+import { chapterWords, fullChapters } from "../data/content";
+import { downloadNicheMd, downloadNichePdf } from "../lib/pdf";
 import { IconCheck, IconDoc, IconDownload } from "./icons";
 
 const ACCENT_HEX: Record<string, string> = {

@@ -555,6 +555,18 @@ const lowerFirst = (s: string) => (s.length ? s[0].toLowerCase() + s.slice(1) : 
 
 export function fullChapters(n: Niche): Chapter[] {
   const s = S[n.id];
+  if (!s) {
+    return [
+      {
+        title: "Введение",
+        pages: 4,
+        blocks: [
+          { kind: "lead", text: `«${n.product.name}» — рабочий инструмент для темы «${lowerFirst(n.title)}».` },
+          { kind: "p", text: n.oneLiner },
+        ],
+      },
+    ];
+  }
   const t = lowerFirst(n.title);
   const chapters: Chapter[] = [
     {
