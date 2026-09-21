@@ -10,7 +10,7 @@ const PRESETS = {
 const fmt = (n: number) => Math.round(n).toLocaleString("ru-RU");
 
 export default function ScalePlan() {
-  const [v, setV] = useState(PRESETS.hundred);
+  const [v, setV] = useState(PRESETS.one);
 
   const base = v.p * v.price * v.sales;
   const upsell = v.p * v.sales * (v.up / 100) * v.upPrice;
@@ -25,9 +25,9 @@ export default function ScalePlan() {
         <span className="h-px w-10 bg-coral/50" />
       </div>
       <h2 className="font-display font-extrabold text-[clamp(1.7rem,3.6vw,2.9rem)] leading-[1.08] tracking-tight mb-4">
-        Одна воронка — 30–50к. <span className="text-coral">100к+ — это сборка</span>
+        Одна воронка даёт 30–50к. <span className="text-coral">100к+ — это сборка</span>
       </h2>
-      <p className="text-mute mb-8 text-[14px] leading-relaxed max-w-xl">Миксер дохода: гайды, апселлы, клуб и услуги складываются в месячный доход. Крути ползунки — смотри, как растёт цифра. Лестница ниже показывает, как прийти к 100к+ по месяцам.</p>
+      <p className="text-mute mb-8 text-[14px] leading-relaxed max-w-xl">Крути миксер: гайды, апселлы, клуб и услуги складываются в месячный доход. Цель — 100 000 ₽. Под миксером — лестница, по которой этот доход собирается по месяцам.</p>
 
       <div className="grid lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 panel p-6 sm:p-8">
@@ -81,25 +81,83 @@ export default function ScalePlan() {
             ))}
           </div>
 
-          <div className="mt-7 pt-6 border-t border-line flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-            <div>
-              <div className="font-mono text-[10px] text-dim tracking-[0.15em] mb-1.5">ИТОГО / МЕСЯЦ</div>
-              <div className="font-display font-extrabold text-[clamp(1.9rem,3.4vw,2.5rem)] leading-none text-amber tabular-nums flex items-baseline gap-1">
-                {fmt(total)}
-                <span className="text-[0.55em] text-mute">₽</span>
+          <div className="mt-7 pt-6 border-t border-line">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-4">
+              <div>
+                <div className="font-mono text-[10px] text-dim tracking-[0.15em] mb-1.5">ИТОГО / МЕСЯЦ</div>
+                <div className="font-display font-extrabold text-[clamp(1.9rem,3.4vw,2.5rem)] leading-none text-amber tabular-nums flex items-baseline gap-1">
+                  {fmt(total)}
+                  <span className="text-[0.55em] text-mute">₽</span>
+                </div>
               </div>
+              <div className={`inline-flex items-center gap-2 font-mono text-[10.5px] px-3.5 py-2 rounded-full border transition-colors duration-300 ${
+                total >= 100000 ? "border-mint/50 bg-mint/10 text-mint" : "border-line text-dim"
+              }`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${total >= 100000 ? "bg-mint animate-pulse" : "bg-dim"}`} />
+                {total >= 100000 ? "цель 100к взята" : `${Math.min(100, Math.round((total / 100000) * 100))}% от цели 100 000 ₽`}
+              </div>
+            </div>
+            <div className="h-2.5 rounded-full bg-line/50 overflow-hidden">
+              <div
+                className={`h-full rounded-full score-bar ${total >= 100000 ? "bg-gradient-to-r from-amber via-coral to-mint" : "bg-gradient-to-r from-amber to-coral"}`}
+                style={{ width: `${Math.min(100, (total / 100000) * 100)}%` }}
+              />
             </div>
           </div>
         </div>
 
         <div className="lg:col-span-5 flex flex-col gap-3">
           {[
-            { sum: "0 → 30к", tone: "text-fog", bar: "bg-fog/50", title: "Первая воронка", time: "недели 1–4" },
-            { sum: "30 → 60к", tone: "text-sky", bar: "bg-sky", title: "Продуктовая лестница", time: "месяцы 2–3" },
-            { sum: "60 → 100к", tone: "text-amber", bar: "bg-amber", title: "Портфель и доступ", time: "месяцы 3–5" },
-            { sum: "100 → 200к+", tone: "text-coral", bar: "bg-coral", title: "Услуга и второй аккаунт", time: "месяц 6+" },
+            { 
+              sum: "0 → 30к", 
+              tone: "text-fog", 
+              bar: "bg-amber", 
+              title: "Первая воронка", 
+              time: "недели 1–4",
+              items: [
+                "Один гайд за 990 ₽ в одной нише",
+                "1–2 рилса в день, кодовое слово под каждым",
+                "Бот @nishevedbot: Stars-оплата и автовыдача"
+              ]
+            },
+            { 
+              sum: "30 → 60к", 
+              tone: "text-sky", 
+              bar: "bg-sky", 
+              title: "Продуктовая лестница", 
+              time: "месяцы 2–3",
+              items: [
+                "Апселл за 2 990–3 990 ₽ (шаблоны, разбор, база) — каждому 3-му покупателю",
+                "Лид-магнит бесплатно → прогрев → допродажа",
+                "Ремейки хитовых рилсов: лучший сценарий месяца переснимается 2–3 раза"
+              ]
+            },
+            { 
+              sum: "60 → 100к", 
+              tone: "text-amber", 
+              bar: "bg-amber", 
+              title: "Портфель и доступ", 
+              time: "месяцы 3–5",
+              items: [
+                "Второй гайд в смежной нише — та же аудитория покупает дважды",
+                "Закрытый клуб 990 ₽/мес: 15 участников = 15к MRR, которые не сгорают",
+                "VIP-разбор 9 900 ₽ — 2 штуки в месяц уже +20к"
+              ]
+            },
+            { 
+              sum: "100 → 200к+", 
+              tone: "text-coral", 
+              bar: "bg-coral", 
+              title: "Услуга и второй аккаунт", 
+              time: "месяц 6+",
+              items: [
+                "«Воронка под ключ» для экспертов: 25–40к × 3 клиента = +100к",
+                "Второй аккаунт в другой нише по той же схеме",
+                "Кейсы с цифрами → повышение чека и коллаборации"
+              ]
+            },
           ].map((l, i) => (
-            <div key={l.sum} className="panel p-5 relative overflow-hidden" style={{ marginLeft: `${Math.min(i * 6, 18)}%` }}>
+            <div key={l.sum} className="group panel p-5 relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:border-line2" style={{ marginLeft: `${Math.min(i * 6, 18)}%` }}>
               <div className={`absolute left-0 top-0 bottom-0 w-[3px] ${l.bar}`} />
               <div className="flex items-center justify-between gap-3 mb-2.5">
                 <div className="flex items-baseline gap-2.5 flex-wrap">
@@ -108,6 +166,14 @@ export default function ScalePlan() {
                 </div>
                 <span className="font-mono text-[9px] text-dim border border-line rounded-full px-2 py-0.5 whitespace-nowrap">{l.time}</span>
               </div>
+              <ul className="space-y-1.5">
+                {l.items.map((item, idx) => (
+                  <li key={idx} className="flex gap-2.5 text-[11.5px] leading-relaxed text-mute">
+                    <span className={`w-1.5 h-1.5 rounded-full ${l.bar} shrink-0 mt-1.5 transition-transform duration-300 group-hover:scale-125`} />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
