@@ -28,8 +28,12 @@ export default function Roadmap({ demo }: { demo?: boolean }) {
 
   return (
     <section id="roadmap" className="py-20 px-5 sm:px-8 max-w-7xl mx-auto bg-paper text-paperink">
-      <h2 className="font-display font-extrabold text-3xl mb-4">План запуска за 7 дней</h2>
-      <p className="text-paperink/60 mb-8">От «не могу выбрать» до первой продажи</p>
+      <div className="flex items-center gap-3 mb-4">
+        <span className="font-mono text-coral text-[11px] tracking-[0.22em] uppercase">06 · план запуска</span>
+        <span className="h-px w-10 bg-coral/60" />
+      </div>
+      <h2 className="font-display font-extrabold text-3xl mb-4">От «не могу выбрать» до первой продажи — 7 дней</h2>
+      <p className="text-paperink/60 mb-8">Каждый день — один блок работы</p>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {DAYS.slice(0, 4).map((d) => (

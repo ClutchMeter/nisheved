@@ -15,7 +15,11 @@ export default function NicheMatrix({ preselectedId }: { preselectedId: string |
 
   return (
     <section id="matrix" className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
-      <h2 className="font-display font-extrabold text-3xl mb-4">Матрица 12 ниш</h2>
+      <div className="flex items-center gap-3 mb-4">
+        <span className="font-mono text-amber text-[11px] tracking-[0.22em] uppercase">01 · матрица сканера</span>
+        <span className="h-px w-10 bg-amber/50" />
+      </div>
+      <h2 className="font-display font-extrabold text-3xl mb-4">12 ниш под воронку рилсы → бот</h2>
       <p className="text-mute mb-8">Оценки по 5 осям для формата без лица</p>
       <div className="space-y-3">
         {NICHES.map((n, idx) => {

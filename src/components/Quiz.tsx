@@ -33,8 +33,12 @@ export default function Quiz({ onPick }: { onPick: (id: string) => void }) {
 
   return (
     <section id="quiz" className="py-20 px-5 sm:px-8 max-w-4xl mx-auto">
-      <h2 className="font-display font-extrabold text-3xl mb-4">Квиз подбора ниши</h2>
-      <p className="text-mute mb-8">5 вопросов — и сканер назовёт твою нишу</p>
+      <div className="flex items-center gap-3 mb-4">
+        <span className="font-mono text-mint text-[11px] tracking-[0.22em] uppercase">02 · квиз-подбор</span>
+        <span className="h-px w-10 bg-mint/50" />
+      </div>
+      <h2 className="font-display font-extrabold text-3xl mb-4">Не можешь выбрать? Ответь на 5 вопросов</h2>
+      <p className="text-mute mb-8">Сканер назовёт твою нишу</p>
       <div className="panel p-6">
         <div className="mb-6">
           <div className="font-mono text-[10.5px] text-dim tracking-[0.15em] mb-2">

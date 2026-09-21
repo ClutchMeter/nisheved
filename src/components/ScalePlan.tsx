@@ -20,8 +20,12 @@ export default function ScalePlan() {
 
   return (
     <section id="scale" className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
-      <h2 className="font-display font-extrabold text-3xl mb-4">Масштаб до 100к+</h2>
-      <p className="text-mute mb-8">Одна воронка даёт 30–50к. 100к+ — это сборка</p>
+      <div className="flex items-center gap-3 mb-4">
+        <span className="font-mono text-coral text-[11px] tracking-[0.22em] uppercase">05 · масштаб</span>
+        <span className="h-px w-10 bg-coral/50" />
+      </div>
+      <h2 className="font-display font-extrabold text-3xl mb-4">Одна воронка даёт 30–50к. 100к+ — это сборка</h2>
+      <p className="text-mute mb-8">Миксер дохода: гайды, апселлы, клуб и услуги складываются в месячный доход</p>
 
       <div className="grid lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 panel p-6 sm:p-8">

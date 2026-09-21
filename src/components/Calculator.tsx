@@ -25,7 +25,11 @@ export default function Calculator() {
 
   return (
     <section id="calculator" className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
-      <h2 className="font-display font-extrabold text-3xl mb-4">Калькулятор дохода</h2>
+      <div className="flex items-center gap-3 mb-4">
+        <span className="font-mono text-amber2 text-[11px] tracking-[0.22em] uppercase">04 · калькулятор</span>
+        <span className="h-px w-10 bg-amber2/50" />
+      </div>
+      <h2 className="font-display font-extrabold text-3xl mb-4">Сколько это приносит</h2>
       <p className="text-mute mb-8">Честная математика воронки</p>
 
       <div className="grid lg:grid-cols-2 gap-6">
