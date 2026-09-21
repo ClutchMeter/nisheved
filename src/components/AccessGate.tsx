@@ -1,11 +1,22 @@
 import { useState } from "react";
-import { IconFunnel, IconLock, IconTelegram, IconArrow } from "./icons";
+import { IconArrow, IconBot, IconDoc, IconFunnel, IconLock, IconReel, IconTelegram } from "./icons";
 
 export const ACCESS_CODES = ["NISH2026", "GAID2026", "VIP365", "PDF2026", "DOHOD100"];
 
-export default function AccessGate({ onUnlock }: { onUnlock: (mode: "code" | "demo") => void }) {
+const INSIDE = [
+  { icon: IconDoc, title: "12 PDF-гайдов", text: "готовые к скачиванию: матрица судьбы, Excel, нейросети, сон, переезд и другие" },
+  { icon: IconBot, title: "Сценарии ботов и рилсов", text: "подписочная воронка, 10 рилсов на каждую нишу, кодовые слова" },
+  { icon: IconReel, title: "Фабрика продуктов", text: "квиз подбора ниши, калькулятор дохода, план запуска за 7 дней" },
+];
+
+interface Props {
+  onUnlock: (mode: "code" | "demo") => void;
+}
+
+export default function AccessGate({ onUnlock }: Props) {
   const [code, setCode] = useState("");
   const [error, setError] = useState(false);
+  const [shakeKey, setShakeKey] = useState(0);
 
   const submit = () => {
     const clean = code.trim().toUpperCase();
@@ -14,6 +25,7 @@ export default function AccessGate({ onUnlock }: { onUnlock: (mode: "code" | "de
       return;
     }
     setError(true);
+    setShakeKey((k) => k + 1);
   };
 
   return (
@@ -25,7 +37,7 @@ export default function AccessGate({ onUnlock }: { onUnlock: (mode: "code" | "de
 
       <div className="relative min-h-full flex items-center justify-center px-5 py-10">
         <div className="w-full max-w-md">
-          <div className="panel overflow-hidden">
+          <div key={shakeKey} className={`anim-in panel overflow-hidden ${error ? "shake border-coral/60" : ""}`}>
             <div className="h-1 bg-gradient-to-r from-amber via-coral to-mint" />
             <div className="p-7 sm:p-8">
               <div className="flex items-center gap-3 mb-6">
@@ -40,7 +52,7 @@ export default function AccessGate({ onUnlock }: { onUnlock: (mode: "code" | "de
                 </div>
                 <span className="ml-auto flex items-center gap-1.5 font-mono text-[9.5px] text-coral border border-coral/35 bg-coral/8 px-2.5 py-1.5 rounded-full">
                   <IconLock size={11} />
-                  единоразовая оплата
+                  по подписке
                 </span>
               </div>
 
@@ -48,9 +60,23 @@ export default function AccessGate({ onUnlock }: { onUnlock: (mode: "code" | "de
                 Доступ открывается <span className="text-amber">кодом из бота</span>
               </h1>
               <p className="mt-3 text-[12.5px] leading-relaxed text-mute">
-                Оплати доступ в <span className="text-fog font-semibold">@nishevedbot</span> — бот пришлёт персональный код.
+                Подпишись в <span className="text-fog font-semibold">@nisheved_bot</span> — бот пришлёт персональный код.
                 Один код = одно место, не передавай его.
               </p>
+
+              <div className="mt-6 space-y-2.5">
+                {INSIDE.map((it) => (
+                  <div key={it.title} className="group flex items-start gap-3 rounded-xl border border-line bg-ink px-3.5 py-3 transition-all duration-300 hover:border-amber/40 hover:translate-x-1">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber/10 text-amber shrink-0 transition-transform duration-300 group-hover:scale-110">
+                      <it.icon size={15} />
+                    </span>
+                    <div>
+                      <div className="font-display font-bold text-[12.5px] text-fog">{it.title}</div>
+                      <div className="font-mono text-[9.5px] text-dim leading-relaxed mt-0.5">{it.text}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
               <div className="mt-6">
                 <label className="font-mono text-[9.5px] tracking-[0.18em] text-dim uppercase">Код доступа</label>
@@ -62,7 +88,7 @@ export default function AccessGate({ onUnlock }: { onUnlock: (mode: "code" | "de
                       setError(false);
                     }}
                     onKeyDown={(e) => e.key === "Enter" && submit()}
-                    placeholder="XXXX2026"
+                    placeholder="NISH2026"
                     maxLength={12}
                     className={`flex-1 min-w-0 rounded-lg bg-ink border px-4 py-3.5 font-mono text-[15px] tracking-[0.28em] text-amber outline-none transition-colors placeholder:text-line2 placeholder:tracking-[0.2em] ${
                       error ? "border-coral/70" : "border-line focus:border-amber/60"
@@ -78,31 +104,20 @@ export default function AccessGate({ onUnlock }: { onUnlock: (mode: "code" | "de
                 </div>
                 {error && (
                   <p className="anim-in font-mono text-[10px] text-coral mt-2.5 leading-relaxed">
-                    Код не найден. Оплати доступ в @nishevedbot — бот выдаст код мгновенно, или войди в демо ниже.
+                    Код не найден. Оплати подписку в @nisheved_bot — бот выдаст код мгновенно, или войди в демо ниже.
                   </p>
                 )}
               </div>
 
-              <p className="mt-5 font-mono text-[9.5px] text-dim leading-relaxed text-center">
-                Нажимая кнопку «Войти», вы соглашаетесь с{" "}
-                <a href="#/terms" className="text-amber hover:text-amber2 transition-colors duration-200">
-                  Условиями использования
-                </a>{" "}
-                и{" "}
-                <a href="#/privacy" className="text-amber hover:text-amber2 transition-colors duration-200">
-                  Политикой конфиденциальности
-                </a>
-              </p>
-
               <div className="mt-6 pt-5 border-t border-line flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                 <a
-                  href="https://t.me/nishevedbot"
+                  href="https://t.me/nisheved_bot"
                   target="_blank"
                   rel="noreferrer"
-                  className="group inline-flex items-center justify-center gap-2 rounded-lg bg-amber text-ink font-display font-extrabold text-[13px] px-5 py-3.5 transition-all duration-300 hover:bg-coral hover:-translate-y-0.5 shadow-[0_8px_28px_-8px_rgba(255,178,36,0.6)]"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky/40 bg-sky/8 text-sky font-display font-bold text-[12px] px-4 py-3 transition-all duration-300 hover:bg-sky/15 hover:-translate-y-0.5"
                 >
                   <IconTelegram size={15} />
-                  Оплатить 1 990 ₽
+                  Взять код в боте · от 990 ₽
                 </a>
                 <button
                   onClick={() => onUnlock("demo")}
@@ -115,7 +130,7 @@ export default function AccessGate({ onUnlock }: { onUnlock: (mode: "code" | "de
           </div>
 
           <p className="font-mono text-[9.5px] text-dim text-center mt-5 leading-relaxed">
-            Единоразовая оплата · Полный доступ навсегда
+            подписка: 990 ₽/мес · 1 990 ₽/квартал · 4 990 ₽ навсегда
           </p>
         </div>
       </div>
