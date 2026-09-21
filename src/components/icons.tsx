@@ -130,3 +130,10 @@ export const IconInstagram = (p: P) => (
     <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
   </svg>
 );
+
+export const IconClock = (p: P) => (
+  <svg {...base(p)}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 6v6l4 2" />
+  </svg>
+);
