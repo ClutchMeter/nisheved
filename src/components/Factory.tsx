@@ -179,15 +179,14 @@ export default function Factory({
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <span className="font-mono text-amber text-[11px] tracking-[0.22em] uppercase">03 · фабрика продукта</span>
+              <span className="font-mono text-amber text-[11px] tracking-[0.22em] uppercase">фабрика продукта</span>
               <span className="h-px w-10 bg-amber/50" />
             </div>
             <h2 className="font-display font-extrabold text-[clamp(1.7rem,3.6vw,2.9rem)] leading-[1.08] tracking-tight max-w-xl">
-              Текст гайда уже <span className="text-amber">написан</span>
+              Весь текст гайда — <span className="text-amber">уже написан</span>
             </h2>
             <p className="mt-4 text-[14px] leading-relaxed text-mute max-w-xl">
-              Выбери нишу — получи готовый текст PDF: метод по шагам, справочная таблица, ускорители, ошибки, план на
-              30 дней. Копируй по главам или скачай файл — и на вёрстку в Canva.
+              Выбирай нишу — и получай готовый текст PDF: метод по шагам, справочные таблицы, ускорители, ошибки, план на 30 дней. Копируй по главам или скачивай целиком — и сразу на вёрстку в Canva.
             </p>
           </div>
           <div className="flex gap-6 sm:gap-8 shrink-0">

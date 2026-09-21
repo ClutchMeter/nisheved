@@ -21,11 +21,13 @@ export default function ScalePlan() {
   return (
     <section id="scale" className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
       <div className="flex items-center gap-3 mb-4">
-        <span className="font-mono text-coral text-[11px] tracking-[0.22em] uppercase">05 · масштаб</span>
+        <span className="font-mono text-coral text-[11px] tracking-[0.22em] uppercase">масштаб</span>
         <span className="h-px w-10 bg-coral/50" />
       </div>
-      <h2 className="font-display font-extrabold text-3xl mb-4">Одна воронка даёт 30–50к. 100к+ — это сборка</h2>
-      <p className="text-mute mb-8">Миксер дохода: гайды, апселлы, клуб и услуги складываются в месячный доход</p>
+      <h2 className="font-display font-extrabold text-[clamp(1.7rem,3.6vw,2.9rem)] leading-[1.08] tracking-tight mb-4">
+        Одна воронка — 30–50к. <span className="text-coral">100к+ — это сборка</span>
+      </h2>
+      <p className="text-mute mb-8 text-[14px] leading-relaxed max-w-xl">Миксер дохода: гайды, апселлы, клуб и услуги складываются в месячный доход. Крути ползунки — смотри, как растёт цифра. Лестница ниже показывает, как прийти к 100к+ по месяцам.</p>
 
       <div className="grid lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 panel p-6 sm:p-8">

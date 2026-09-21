@@ -229,15 +229,14 @@ export default function LaunchKit({ demo = false }: { demo?: boolean }) {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <span className="font-mono text-sky text-[11px] tracking-[0.22em] uppercase">07 · запуск</span>
+              <span className="font-mono text-sky text-[11px] tracking-[0.22em] uppercase">запуск</span>
               <span className="h-px w-10 bg-sky/50" />
             </div>
             <h2 className="font-display font-extrabold text-[clamp(1.7rem,3.6vw,2.9rem)] leading-[1.08] tracking-tight max-w-xl">
-              Промпты для PDF и <span className="text-amber">Instagram-запуск</span>
+              Промпты для PDF и <span className="text-amber">Instagram-айдентика</span>
             </h2>
             <p className="mt-4 text-[14px] leading-relaxed text-mute max-w-xl">
-              Готовые промпты, чтобы собрать свёрстанный PDF нейросетями, и айдентика аккаунта: имя, аватар, био и
-              первый рилс. Всё копируется одной кнопкой.
+              Готовые промпты, чтобы собрать свёрстанный PDF нейросетями, и айдентика аккаунта: имя, аватар, био и первый рилс. Всё копируется одной кнопкой — вставляй в Claude, Canva или Midjourney.
             </p>
           </div>
         </div>
