@@ -8,6 +8,8 @@ import Roadmap from "./components/Roadmap";
 import LaunchKit from "./components/LaunchKit";
 import AccessGate from "./components/AccessGate";
 import Library from "./components/Library";
+import Privacy from "./components/Privacy";
+import Terms from "./components/Terms";
 import { IconArrow, IconBot, IconComment, IconCross, IconDm, IconFunnel, IconLock, IconReel, IconRuble, IconTelegram } from "./components/icons";
 import { useCountUp, useRevealObserver, useScramble } from "./lib/hooks";
 
@@ -236,6 +238,12 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Роутинг для юридических страниц
+  if (typeof window !== "undefined") {
+    if (window.location.hash === "#/privacy") return <Privacy />;
+    if (window.location.hash === "#/terms") return <Terms />;
+  }
+
   return (
     <div className="relative min-h-screen bg-ink text-fog font-body">
       <div className="noise-layer" aria-hidden />
@@ -366,6 +374,16 @@ export default function App() {
           <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center font-mono text-[10px] text-dim">
             <IconTelegram size={12} className="text-sky shrink-0" />
             воронка: рилс с кодовым словом → автоответ → бот → оплата Stars → PDF в чат
+          </div>
+        </div>
+        <div className="border-t border-line/60">
+          <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center font-mono text-[10px]">
+            <a href="#/privacy" className="text-mute hover:text-amber transition-colors duration-200">
+              Политика конфиденциальности
+            </a>
+            <a href="#/terms" className="text-mute hover:text-amber transition-colors duration-200">
+              Условия использования
+            </a>
           </div>
         </div>
       </footer>
