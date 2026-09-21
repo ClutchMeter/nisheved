@@ -26,7 +26,7 @@ export default function Calculator() {
   return (
     <section id="calculator" className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
       <div className="flex items-center gap-3 mb-4">
-        <span className="font-mono text-amber2 text-[11px] tracking-[0.22em] uppercase">калькулятор</span>
+        <span className="font-mono text-amber2 text-[11px] tracking-[0.22em] uppercase">04 · калькулятор</span>
         <span className="h-px w-10 bg-amber2/50" />
       </div>
       <h2 className="font-display font-extrabold text-[clamp(1.7rem,3.6vw,2.9rem)] leading-[1.08] tracking-tight mb-4">

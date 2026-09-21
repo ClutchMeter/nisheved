@@ -29,7 +29,7 @@ export default function Roadmap({ demo }: { demo?: boolean }) {
   return (
     <section id="roadmap" className="py-20 px-5 sm:px-8 max-w-7xl mx-auto bg-paper text-paperink">
       <div className="flex items-center gap-3 mb-4">
-        <span className="font-mono text-coral text-[11px] tracking-[0.22em] uppercase">план запуска</span>
+        <span className="font-mono text-coral text-[11px] tracking-[0.22em] uppercase">06 · план запуска</span>
         <span className="h-px w-10 bg-coral/60" />
       </div>
       <h2 className="font-display font-extrabold text-[clamp(1.7rem,3.6vw,2.9rem)] leading-[1.08] tracking-tight mb-4">

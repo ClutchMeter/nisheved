@@ -15,11 +15,10 @@ export default function NicheMatrix({ preselectedId }: { preselectedId: string |
 
   return (
     <section id="matrix" className="py-20 px-5 sm:px-8 max-w-7xl mx-auto">
-      <div className="flex items-center gap-3 mb-4">
-        <span className="font-mono text-amber text-[11px] tracking-[0.22em] uppercase">матрица сканера</span>
-        <span className="h-px w-10 bg-amber/50" />
-      </div>
-      <h2 className="font-display font-extrabold text-[clamp(1.7rem,3.6vw,2.9rem)] leading-[1.08] tracking-tight mb-4">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="font-mono text-amber text-[11px] tracking-[0.22em] uppercase">01 · матрица сканера</span>
+              <span className="h-px w-10 bg-amber/50" />
+            </div>      <h2 className="font-display font-extrabold text-[clamp(1.7rem,3.6vw,2.9rem)] leading-[1.08] tracking-tight mb-4">
         Выбери нишу — <span className="text-amber">мы покажем все</span>
       </h2>
       <p className="text-mute mb-8 text-[14px] leading-relaxed max-w-xl">12 проверенных ниш с оценками по 5 осям: спрос, вход, контент, маржа, скорость. Каждая — с готовым продуктом, кодовым словом и хуками для рилсов.</p>
