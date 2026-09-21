@@ -380,13 +380,13 @@ export default function Factory({
 
                 {tab === "reels" && (
                   <div className="overflow-x-auto scrollbar-none -mx-1">
-                    <table className="w-full min-w-[560px] border-separate border-spacing-y-2 px-1">
+                    <table className="w-full border-separate border-spacing-y-2 px-1">
                       <thead>
                         <tr className="font-mono text-[9.5px] text-dim tracking-[0.15em] text-left">
-                          <th className="font-normal pb-1 pl-3 w-14">ДЕНЬ</th>
-                          <th className="font-normal pb-1 w-40">ФОРМАТ</th>
+                          <th className="font-normal pb-1 pl-3 w-12 sm:w-14">ДЕНЬ</th>
+                          <th className="font-normal pb-1 w-28 sm:w-40">ФОРМАТ</th>
                           <th className="font-normal pb-1">ТЕКСТ НА ВИДЕО</th>
-                          <th className="font-normal pb-1 pr-3 w-24 text-right">СЛОВО</th>
+                          <th className="font-normal pb-1 pr-3 w-16 sm:w-24 text-right">СЛОВО</th>
                         </tr>
                       </thead>
                       <tbody>

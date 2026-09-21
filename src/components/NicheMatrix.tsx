@@ -37,7 +37,7 @@ export default function NicheMatrix({ preselectedId }: { preselectedId: string |
                     ключ «{n.keyword}» · чек {n.price} ₽
                   </div>
                   <p className="text-[12px] text-mute mt-2">{n.oneLiner}</p>
-                  <div className="grid grid-cols-5 gap-2 mt-3">
+                  <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mt-3">
                     {Object.entries(n.scores).map(([key, val]) => (
                       <div key={key}>
                         <div className="font-mono text-[8.5px] text-dim mb-1">{key}</div>
