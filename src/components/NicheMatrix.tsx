@@ -27,7 +27,7 @@ export default function NicheMatrix({ preselectedId }: { preselectedId: string |
                 <span className="font-mono text-[11px] text-dim tabular-nums">{String(idx + 1).padStart(2, "0")}</span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2.5 flex-wrap mb-2">
-                    <span className="font-display font-bold text-[15px] text-fog">{n.name}</span>
+                    <span className="font-display font-bold text-[15px] text-fog">{n.title}</span>
                     <span className={`inline-flex items-center gap-1.5 font-mono text-[9px] px-2 py-0.5 rounded-full border ${meta.cls}`}>
                       <span className={`w-1.5 h-1.5 rounded-full ${meta.dot}`} />
                       {meta.label}
@@ -36,7 +36,7 @@ export default function NicheMatrix({ preselectedId }: { preselectedId: string |
                   <div className={`font-mono text-[10.5px] mt-0.5 ${ACCENT_TEXT[n.accent]}`}>
                     ключ «{n.keyword}» · чек {n.price} ₽
                   </div>
-                  <p className="text-[12px] text-mute mt-2">{n.pain}</p>
+                  <p className="text-[12px] text-mute mt-2">{n.oneLiner}</p>
                   <div className="grid grid-cols-5 gap-2 mt-3">
                     {Object.entries(n.scores).map(([key, val]) => (
                       <div key={key}>

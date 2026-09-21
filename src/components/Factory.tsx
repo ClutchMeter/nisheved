@@ -40,7 +40,7 @@ export default function Factory({ preselectedId, demo, onUpgrade }: { preselecte
                 : "border-line text-mute hover:border-amber/40 hover:text-fog"
             }`}
           >
-            {n.name.split(" ")[0]}
+            {n.short}
           </button>
         ))}
       </div>
@@ -68,7 +68,7 @@ export default function Factory({ preselectedId, demo, onUpgrade }: { preselecte
             <div className="space-y-3">
               <div className="rounded-xl border border-line bg-ink p-4">
                 <div className="font-display font-bold text-[13.5px] text-fog mb-2">{niche.product.name}</div>
-                <p className="text-[12px] text-mute leading-relaxed">{niche.pain}</p>
+                <p className="text-[12px] text-mute leading-relaxed">{niche.oneLiner}</p>
                 <p className="text-[12px] text-mute leading-relaxed mt-2">Аудитория: {niche.audience}</p>
                 <p className="text-[12px] text-mute leading-relaxed mt-2">Формат: {niche.product.format}</p>
                 <p className="text-[12px] text-mute leading-relaxed mt-2">Объём: {niche.product.volume}</p>

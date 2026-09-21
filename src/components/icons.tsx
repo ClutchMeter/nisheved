@@ -82,6 +82,12 @@ export const IconCheck = (p: P) => (
   </svg>
 );
 
+export const IconCross = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M18 6L6 18M6 6l12 12" />
+  </svg>
+);
+
 export const IconCopy = (p: P) => (
   <svg {...base(p)}>
     <rect x="9" y="9" width="13" height="13" rx="2" />
