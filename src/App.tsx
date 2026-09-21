@@ -186,14 +186,14 @@ export default function App() {
   const [pickedNiche, setPickedNiche] = useState<string | null>(null);
   const [locked, setLocked] = useState<boolean>(() => {
     try {
-      return !localStorage.getItem("nisheved-unlocked");
+      return !sessionStorage.getItem("nisheved-unlocked");
     } catch {
       return true;
     }
   });
   const [demoMode, setDemoMode] = useState<boolean>(() => {
     try {
-      return localStorage.getItem("nisheved-unlocked") === "demo";
+      return sessionStorage.getItem("nisheved-unlocked") === "demo";
     } catch {
       return false;
     }
@@ -201,7 +201,7 @@ export default function App() {
 
   const exitDemo = useCallback(() => {
     try {
-      localStorage.removeItem("nisheved-unlocked");
+      sessionStorage.removeItem("nisheved-unlocked");
     } catch {
       /* приватный режим — работаем без сохранения */
     }
@@ -210,7 +210,7 @@ export default function App() {
 
   const handleUnlock = useCallback((mode: "code" | "demo") => {
     try {
-      localStorage.setItem("nisheved-unlocked", mode);
+      sessionStorage.setItem("nisheved-unlocked", mode);
     } catch {
       /* приватный режим — работаем без сохранения */
     }
