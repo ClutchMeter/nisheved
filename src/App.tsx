@@ -238,17 +238,10 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Проверка параметра logout в URL
+  // Всегда показывать экран входа при загрузке страницы
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get("logout") === "true") {
-        exitDemo();
-        // Удаляем параметр из URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
-    }
-  }, [exitDemo]);
+    exitDemo();
+  }, []);
 
   // Роутинг для юридических страниц
   if (typeof window !== "undefined") {
