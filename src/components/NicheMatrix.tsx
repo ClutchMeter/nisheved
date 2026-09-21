@@ -14,7 +14,7 @@ const AXIS_LABELS: Record<string, string> = {
   speed: "Скорость",
 };
 
-export default function NicheMatrix({ preselectedId }: { preselectedId: string | null }) {
+export default function NicheMatrix({ preselectedId, demo = false }: { preselectedId: string | null; demo?: boolean }) {
   const [copied, setCopied] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [filter, setFilter] = useState<FilterType>("all");
@@ -29,6 +29,7 @@ export default function NicheMatrix({ preselectedId }: { preselectedId: string |
   };
 
   const toggleExpand = (id: string) => {
+    if (demo) return; // В демо-режиме не разворачиваем
     setExpandedId(expandedId === id ? null : id);
   };
 
