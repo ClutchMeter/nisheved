@@ -188,7 +188,10 @@ export default function App() {
   const [pickedNiche, setPickedNiche] = useState<string | null>(null);
   const [locked, setLocked] = useState<boolean>(() => {
     try {
-      return !sessionStorage.getItem("nisheved-unlocked");
+      // Проверяем наличие кода в localStorage
+      const hasCode = localStorage.getItem("nisheved_access_code");
+      const hasSession = sessionStorage.getItem("nisheved-unlocked");
+      return !hasCode && !hasSession;
     } catch {
       return true;
     }
@@ -204,6 +207,8 @@ export default function App() {
   const exitDemo = useCallback(() => {
     try {
       sessionStorage.removeItem("nisheved-unlocked");
+      localStorage.removeItem("nisheved_access_code");
+      localStorage.removeItem("nisheved_telegram_username");
     } catch {
       /* приватный режим — работаем без сохранения */
     }
@@ -238,9 +243,17 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Всегда показывать экран входа при загрузке страницы
+  // Проверяем наличие кода в localStorage при загрузке
   useEffect(() => {
-    exitDemo();
+    try {
+      const hasCode = localStorage.getItem("nisheved_access_code");
+      if (hasCode) {
+        setLocked(false);
+        setDemoMode(false);
+      }
+    } catch {
+      // Если localStorage недоступен, показываем экран входа
+    }
   }, []);
 
   // Роутинг для юридических страниц
@@ -303,6 +316,14 @@ export default function App() {
               Подобрать нишу
               <IconArrow size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
             </a>
+            {!demoMode && !locked && (
+              <button
+                onClick={exitDemo}
+                className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-line text-mute font-mono text-[11px] px-3 py-2 transition-all duration-200 hover:border-coral/50 hover:text-coral cursor-pointer"
+              >
+                Выйти
+              </button>
+            )}
             <button
               onClick={() => setMenuOpen((v) => !v)}
               aria-label="меню"
