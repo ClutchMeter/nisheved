@@ -263,7 +263,7 @@ export default function App() {
   }
 
   return (
-    <div className="relative min-h-screen bg-ink text-fog font-body">
+    <div className="relative min-h-screen bg-ink text-fog font-body tg-viewport-height overflow-x-hidden">
       <div className="noise-layer" aria-hidden />
       {locked && <AccessGate onUnlock={handleUnlock} />}
 
@@ -290,12 +290,12 @@ export default function App() {
           style={{ width: `${progress}%`, transition: "width 0.12s linear" }}
           aria-hidden
         />
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between gap-4">
-          <a href="#top" className="flex items-center gap-2.5 group">
-            <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-amber text-ink transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">
-              <IconFunnel size={19} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
+          <a href="#top" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
+            <span className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-amber text-ink transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">
+              <IconFunnel size={17} />
             </span>
-            <span className="font-display font-extrabold tracking-tight text-[15px]">
+            <span className="font-display font-extrabold tracking-tight text-[13px] sm:text-[15px]">
               НИШЕ<span className="text-amber">ВЕД</span>
             </span>
           </a>
@@ -308,7 +308,7 @@ export default function App() {
             ))}
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             <a
               href="#quiz"
               className="group hidden sm:inline-flex items-center gap-2 rounded-lg bg-fog text-ink font-display font-bold text-[12.5px] px-4 py-2.5 transition-all duration-300 hover:bg-amber hover:-translate-y-0.5"
@@ -345,19 +345,27 @@ export default function App() {
         </div>
 
         {menuOpen && (
-          <div className="lg:hidden anim-in border-t border-line bg-ink/95 backdrop-blur-md px-5 py-4">
+          <div className="lg:hidden anim-in border-t border-line bg-ink/95 backdrop-blur-md px-4 py-3">
             <div className="grid grid-cols-2 gap-2">
               {NAV.map((n) => (
                 <a
                   key={n.href}
                   href={n.href}
                   onClick={() => setMenuOpen(false)}
-                  className="font-mono text-[12px] text-mute hover:text-amber px-3.5 py-3 rounded-lg border border-line/70 hover:border-amber/40 transition-colors duration-200"
+                  className="font-mono text-[11px] text-mute hover:text-amber px-3 py-2.5 rounded-lg border border-line/70 hover:border-amber/40 transition-colors duration-200 text-center"
                 >
                   {n.label}
                 </a>
               ))}
             </div>
+            {!demoMode && !locked && (
+              <button
+                onClick={exitDemo}
+                className="mt-2 w-full sm:hidden flex items-center justify-center gap-1.5 rounded-lg border border-line text-mute font-mono text-[11px] px-3 py-2.5 transition-all duration-200 hover:border-coral/50 hover:text-coral cursor-pointer"
+              >
+                Выйти
+              </button>
+            )}
           </div>
         )}
       </nav>

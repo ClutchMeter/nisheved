@@ -73,52 +73,53 @@ export default function AccessGate({ onUnlock }: Props) {
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[620px] h-[420px] rounded-full bg-amber/10 blur-[130px]" />
       </div>
 
-      <div className="relative min-h-full flex items-center justify-center px-5 py-10">
+      <div className="relative min-h-full flex items-center justify-center px-4 sm:px-5 py-8 sm:py-10">
         <div className="w-full max-w-md">
           <div key={shakeKey} className={`anim-in panel overflow-hidden ${error ? "shake border-coral/60" : ""}`}>
             <div className="h-1 bg-gradient-to-r from-amber via-coral to-mint" />
-            <div className="p-7 sm:p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="flex items-center justify-center w-11 h-11 rounded-xl bg-amber text-ink">
-                  <IconFunnel size={22} />
+            <div className="p-5 sm:p-7 md:p-8">
+              <div className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-6">
+                <span className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-amber text-ink shrink-0">
+                  <IconFunnel size={20} />
                 </span>
-                <div>
-                  <div className="font-display font-extrabold tracking-tight text-[16px] leading-none">
+                <div className="min-w-0 flex-1">
+                  <div className="font-display font-extrabold tracking-tight text-[14px] sm:text-[16px] leading-none">
                     НИШЕ<span className="text-amber">ВЕД</span>
                   </div>
-                  <div className="font-mono text-[9.5px] text-dim mt-1.5 tracking-[0.18em] uppercase">закрытая библиотека</div>
+                  <div className="font-mono text-[8.5px] sm:text-[9.5px] text-dim mt-1 sm:mt-1.5 tracking-[0.18em] uppercase">закрытая библиотека</div>
                 </div>
-                <span className="ml-auto flex items-center gap-1.5 font-mono text-[9.5px] text-coral border border-coral/35 bg-coral/8 px-2.5 py-1.5 rounded-full">
-                  <IconLock size={11} />
-                  единоразовая оплата
+                <span className="ml-auto flex items-center gap-1 sm:gap-1.5 font-mono text-[8px] sm:text-[9.5px] text-coral border border-coral/35 bg-coral/8 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full shrink-0">
+                  <IconLock size={10} />
+                  <span className="hidden sm:inline">единоразовая оплата</span>
+                  <span className="sm:hidden">оплата</span>
                 </span>
               </div>
 
-              <h1 className="font-display font-extrabold text-[clamp(1.3rem,4vw,1.7rem)] leading-[1.15] tracking-tight">
+              <h1 className="font-display font-extrabold text-[clamp(1.2rem,4vw,1.7rem)] leading-[1.15] tracking-tight">
                 Доступ открывается <span className="text-amber">кодом из бота</span>
               </h1>
-              <p className="mt-3 text-[12.5px] leading-relaxed text-mute">
+              <p className="mt-2 sm:mt-3 text-[11.5px] sm:text-[12.5px] leading-relaxed text-mute">
                 Оплати доступ в <span className="text-fog font-semibold">@nishevedbot</span> — бот пришлёт персональный код.
                 Один код = одно место, не передавай его.
               </p>
 
-              <div className="mt-6 space-y-2.5">
+              <div className="mt-4 sm:mt-6 space-y-2 sm:space-y-2.5">
                 {INSIDE.map((it) => (
-                  <div key={it.title} className="group flex items-start gap-3 rounded-xl border border-line bg-ink px-3.5 py-3 transition-all duration-300 hover:border-amber/40 hover:translate-x-1">
-                    <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber/10 text-amber shrink-0 transition-transform duration-300 group-hover:scale-110">
-                      <it.icon size={15} />
+                  <div key={it.title} className="group flex items-start gap-2 sm:gap-3 rounded-xl border border-line bg-ink px-3 sm:px-3.5 py-2.5 sm:py-3 transition-all duration-300 hover:border-amber/40 hover:translate-x-1">
+                    <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber/10 text-amber shrink-0 transition-transform duration-300 group-hover:scale-110">
+                      <it.icon size={14} />
                     </span>
-                    <div>
-                      <div className="font-display font-bold text-[12.5px] text-fog">{it.title}</div>
-                      <div className="font-mono text-[9.5px] text-dim leading-relaxed mt-0.5">{it.text}</div>
+                    <div className="min-w-0">
+                      <div className="font-display font-bold text-[11.5px] sm:text-[12.5px] text-fog">{it.title}</div>
+                      <div className="font-mono text-[8.5px] sm:text-[9.5px] text-dim leading-relaxed mt-0.5">{it.text}</div>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-6 space-y-4">
+              <div className="mt-5 sm:mt-6 space-y-3 sm:space-y-4">
                 <div>
-                  <label className="font-mono text-[9.5px] tracking-[0.18em] text-dim uppercase">Код доступа</label>
+                  <label className="font-mono text-[8.5px] sm:text-[9.5px] tracking-[0.18em] text-dim uppercase">Код доступа</label>
                   <input
                     value={code}
                     onChange={(e) => {
@@ -130,14 +131,14 @@ export default function AccessGate({ onUnlock }: Props) {
                     placeholder="XXXX2026"
                     maxLength={12}
                     disabled={isLoading}
-                    className={`w-full mt-2 rounded-lg bg-ink border px-4 py-3.5 font-mono text-[15px] tracking-[0.28em] text-amber outline-none transition-colors placeholder:text-line2 placeholder:tracking-[0.2em] ${
+                    className={`w-full mt-1.5 sm:mt-2 rounded-lg bg-ink border px-3 sm:px-4 py-3 sm:py-3.5 font-mono text-[14px] sm:text-[15px] tracking-[0.28em] text-amber outline-none transition-colors placeholder:text-line2 placeholder:tracking-[0.2em] ${
                       error ? "border-coral/70" : "border-line focus:border-amber/60"
                     } ${isLoading ? "opacity-50" : ""}`}
                   />
                 </div>
 
                 <div>
-                  <label className="font-mono text-[9.5px] tracking-[0.18em] text-dim uppercase">
+                  <label className="font-mono text-[8.5px] sm:text-[9.5px] tracking-[0.18em] text-dim uppercase">
                     Ваш Telegram username (без @)
                   </label>
                   <input
@@ -151,7 +152,7 @@ export default function AccessGate({ onUnlock }: Props) {
                     placeholder="username"
                     maxLength={32}
                     disabled={isLoading}
-                    className={`w-full mt-2 rounded-lg bg-ink border px-4 py-3.5 font-mono text-[15px] tracking-[0.1em] text-amber outline-none transition-colors placeholder:text-line2 placeholder:tracking-[0.1em] ${
+                    className={`w-full mt-1.5 sm:mt-2 rounded-lg bg-ink border px-3 sm:px-4 py-3 sm:py-3.5 font-mono text-[14px] sm:text-[15px] tracking-[0.1em] text-amber outline-none transition-colors placeholder:text-line2 placeholder:tracking-[0.1em] ${
                       error ? "border-coral/70" : "border-line focus:border-amber/60"
                     } ${isLoading ? "opacity-50" : ""}`}
                   />
@@ -160,7 +161,7 @@ export default function AccessGate({ onUnlock }: Props) {
                 <button
                   onClick={submit}
                   disabled={isLoading}
-                  className="group w-full inline-flex items-center justify-center gap-2 rounded-lg bg-amber text-ink font-display font-bold text-[12.5px] px-5 py-3.5 transition-all duration-300 hover:bg-coral hover:-translate-y-0.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="group w-full inline-flex items-center justify-center gap-2 rounded-lg bg-amber text-ink font-display font-bold text-[12px] sm:text-[12.5px] px-4 sm:px-5 py-3 sm:py-3.5 transition-all duration-300 hover:bg-coral hover:-translate-y-0.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (
                     <>
@@ -193,19 +194,19 @@ export default function AccessGate({ onUnlock }: Props) {
                 </a>
               </p>
 
-              <div className="mt-6 pt-5 border-t border-line flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <div className="mt-5 sm:mt-6 pt-4 sm:pt-5 border-t border-line flex flex-col gap-3">
                 <a
                   href="https://t.me/nishevedbot"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky/40 bg-sky/8 text-sky font-display font-bold text-[12px] px-4 py-3 transition-all duration-300 hover:bg-sky/15 hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky/40 bg-sky/8 text-sky font-display font-bold text-[11px] sm:text-[12px] px-3 sm:px-4 py-2.5 sm:py-3 transition-all duration-300 hover:bg-sky/15 hover:-translate-y-0.5"
                 >
-                  <IconTelegram size={15} />
+                  <IconTelegram size={14} />
                   Оплатить 1 990 ₽
                 </a>
                 <button
                   onClick={() => onUnlock("demo")}
-                  className="font-mono text-[10.5px] text-dim hover:text-amber transition-colors duration-200 underline decoration-line underline-offset-4 cursor-pointer text-center"
+                  className="font-mono text-[10px] sm:text-[10.5px] text-dim hover:text-amber transition-colors duration-200 underline decoration-line underline-offset-4 cursor-pointer text-center"
                 >
                   посмотреть демо-доступ →
                 </button>
@@ -213,7 +214,7 @@ export default function AccessGate({ onUnlock }: Props) {
             </div>
           </div>
 
-          <p className="font-mono text-[9.5px] text-dim text-center mt-5 leading-relaxed">
+          <p className="font-mono text-[8.5px] sm:text-[9.5px] text-dim text-center mt-4 sm:mt-5 leading-relaxed">
             Единоразовая оплата · Полный доступ навсегда
           </p>
         </div>
