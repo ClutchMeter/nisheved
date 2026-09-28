@@ -214,3 +214,155 @@ body {
     transform: none;
   }
 }
+
+/* ---------- mobile & telegram mini app ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Базовые стили для мобильных */
+@media (max-width: 768px) {
+  /* Контейнеры */
+  .max-w-7xl {
+    max-width: 100% !important;
+  }
+  
+  /* Уменьшаем отступы по бокам */
+  .px-5 {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  
+  .sm\:px-8 {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  
+  /* Уменьшаем размеры шрифтов для узких экранов */
+  .text-\[clamp\(1\.7rem\,3\.6vw\,2\.9rem\)\] {
+    font-size: clamp(1.4rem, 5vw, 2rem) !important;
+  }
+  
+  .text-\[clamp\(2\.1rem\,4\.8vw\,3\.9rem\)\] {
+    font-size: clamp(1.6rem, 6vw, 2.4rem) !important;
+  }
+}
+
+/* Очень узкие экраны (iPhone SE и меньше) */
+@media (max-width: 400px) {
+  .px-5 {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  
+  .sm\:px-8 {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  
+  /* Уменьшаем отступы в карточках */
+  .p-5 {
+    padding: 16px !important;
+  }
+  
+  .sm\:p-8 {
+    padding: 16px !important;
+  }
+  
+  .p-6 {
+    padding: 16px !important;
+  }
+  
+  .sm\:p-6 {
+    padding: 16px !important;
+  }
+  
+  /* Уменьшаем заголовки */
+  .text-3xl {
+    font-size: 1.5rem !important;
+  }
+  
+  .text-2xl {
+    font-size: 1.25rem !important;
+  }
+}
+
+/* Telegram Mini App специфичные стили */
+.tg-viewport-height {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+/* Поддержка safe area для iPhone с вырезом */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .fixed.bottom-4 {
+    bottom: calc(16px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* Предотвращаем горизонтальный скролл */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+  position: relative;
+}
+
+/* Убираем лишние отступы у контейнеров */
+main, section {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Адаптивные таблицы */
+@media (max-width: 640px) {
+  table {
+    font-size: 0.75rem;
+  }
+  
+  th, td {
+    padding: 8px 4px;
+  }
+}
+
+/* Фикс для iOS input zoom */
+@media screen and (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Улучшаем touch targets */
+@media (max-width: 768px) {
+  button, a, input, select, textarea {
+    min-height: 44px;
+  }
+  
+  /* Увеличиваем область клика для кнопок */
+  .cursor-pointer {
+    padding: 8px;
+  }
+}
+
+/* Telegram WebApp theme support */
+:root {
+  --tg-theme-bg-color: #0f1522;
+  --tg-theme-text-color: #e9eef6;
+  --tg-theme-button-color: #ffb224;
+  --tg-theme-button-text-color: #0f1522;
+}
+
+/* Адаптация под Telegram темы */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tg-theme-bg-color: var(--color-ink);
+    --tg-theme-text-color: var(--color-fog);
+    --tg-theme-button-color: var(--color-amber);
+    --tg-theme-button-text-color: var(--color-ink);
+  }
+}
