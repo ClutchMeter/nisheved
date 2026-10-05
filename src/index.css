@@ -367,3 +367,83 @@ main, section {
     --tg-theme-button-text-color: var(--color-ink);
   }
 }
+
+/* Исправление мобильной версии страницы входа */
+@media (max-width: 500px) {
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+  }
+  
+  /* Главный контейнер формы входа */
+  .fixed.inset-0 {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* Внутренний контейнер с отступами */
+  .fixed.inset-0 > .relative {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Контейнер с максимальной шириной */
+  .fixed.inset-0 .w-full.max-w-md {
+    width: 100% !important;
+    max-width: calc(100vw - 32px) !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Панель формы входа */
+  .fixed.inset-0 .panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+  
+  /* Все внутренние элементы */
+  .fixed.inset-0 input,
+  .fixed.inset-0 button,
+  .fixed.inset-0 textarea,
+  .fixed.inset-0 select {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Карточки с описанием */
+  .fixed.inset-0 .rounded-xl.border {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Заголовки и текст */
+  .fixed.inset-0 h1,
+  .fixed.inset-0 h2,
+  .fixed.inset-0 h3,
+  .fixed.inset-0 h4,
+  .fixed.inset-0 h5,
+  .fixed.inset-0 h6,
+  .fixed.inset-0 p,
+  .fixed.inset-0 span {
+    max-width: 100% !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Flex контейнеры */
+  .fixed.inset-0 .flex {
+    flex-wrap: wrap;
+    max-width: 100% !important;
+  }
+  
+  /* Убираем абсолютное позиционирование для фона */
+  .fixed.inset-0 .absolute.-top-24 {
+    display: none !important;
+  }
+}
